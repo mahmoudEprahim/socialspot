@@ -2,79 +2,69 @@
 
 {% block content %}
 <style>
-    /* ------------------------------------------- */
-    /* أنماط عامة للحاوية في Index Page */
-    /* ------------------------------------------- */
     .index-page-container {
-        /* هذا الكلاس سيغطي محتوى الصفحة بالكامل */
-        margin-top: -20px; /* لتقليل المسافة العلوية من navbar إذا أردت */
+        margin-top: -20px;
         padding-top: 0;
         padding-bottom: 0;
-        direction: rtl; /* اتجاه النص الأساسي للصفحة */
-        text-align: right; /* محاذاة النص الافتراضية */
+        direction: rtl;
+        text-align: right;
     }
 
-    /* ------------------------------------------- */
-    /* Hero Section - القسم الرئيسي */
-    /* ------------------------------------------- */
     .hero-section {
         background: linear-gradient(to right, rgba(42, 61, 84, 0.9), rgba(52, 73, 94, 0.8)), url("{{ url_for('static', filename='images/hero-background.jpg') }}") no-repeat center center/cover;
         color: #ecf0f1;
         padding: 100px 20px;
         border-radius: 12px;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-        margin-bottom: 60px; /* مسافة قبل القسم التالي */
+        margin-bottom: 60px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        min-height: 500px; /* الحد الأدنى للارتفاع */
+        min-height: 500px;
     }
 
     .hero-section h1 {
         color: #f9cf00;
-        font-size: 4.5rem; /* أكبر حجماً */
+        font-size: 4.5rem;
         font-weight: 800;
         margin-bottom: 30px;
         line-height: 1.2;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* ظل للنص */
-        animation: fadeInDown 1s ease-out; /* انيميشن للعنوان */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        animation: fadeInDown 1s ease-out;
         text-align: center;
     }
 
     .hero-section p {
-        font-size: 1.6rem; /* أكبر حجماً */
+        font-size: 1.6rem;
         max-width: 900px;
         margin: 0 auto 50px auto;
         line-height: 1.7;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-        animation: fadeInUp 1.2s ease-out; /* انيميشن للفقرة */
+        animation: fadeInUp 1.2s ease-out;
     }
 
     .hero-button {
         background-color: #f9cf00;
         color: #2c3e50;
         padding: 20px 50px;
-        font-size: 1.8rem; /* أكبر حجماً */
+        font-size: 1.8rem;
         font-weight: bold;
         border: none;
         border-radius: 10px;
         transition: all 0.3s ease;
         text-decoration: none;
         display: inline-block;
-        animation: pulse 1.5s infinite alternate; /* انيميشن نبض للزر */
+        animation: pulse 1.5s infinite alternate;
     }
 
     .hero-button:hover {
         background-color: #e6b800;
-        transform: translateY(-8px) scale(1.02); /* رفع وتكبير بسيط */
+        transform: translateY(-8px) scale(1.02);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         color: #2c3e50;
     }
 
-    /* ------------------------------------------- */
-    /* Features Section - قسم الميزات */
-    /* ------------------------------------------- */
     .features-section {
         margin-top: 60px;
         padding: 60px 20px;
@@ -101,18 +91,18 @@
 
     .feature-item:hover {
         transform: translateY(-10px);
-        background-color: rgba(0, 0, 0, 0.1); /* خلفية خفيفة عند التحويم */
+        background-color: rgba(0, 0, 0, 0.1);
     }
 
     .feature-item .feature-icon {
-        font-size: 4.5rem; /* حجم أكبر */
+        font-size: 4.5rem;
         color: #3498db;
         margin-bottom: 20px;
         transition: transform 0.5s ease;
     }
 
     .feature-item:hover .feature-icon {
-        transform: rotateY(360deg); /* دوران كامل */
+        transform: rotateY(360deg);
     }
 
     .feature-item h4 {
@@ -129,9 +119,6 @@
         line-height: 1.6;
     }
 
-    /* ------------------------------------------- */
-    /* How It Works Section - قسم كيف تعمل */
-    /* ------------------------------------------- */
     .how-it-works-section {
         background-color: #34495e;
         color: #ecf0f1;
@@ -155,7 +142,7 @@
 
     .step-item img {
         width: 100%;
-        max-width: 300px; /* حجم معقول للصور */
+        max-width: 300px;
         height: auto;
         border-radius: 10px;
         margin-bottom: 25px;
@@ -164,11 +151,11 @@
     }
 
     .step-item img:hover {
-        transform: scale(1.05); /* تكبير عند التحويم */
+        transform: scale(1.05);
     }
 
     .step-item h4 {
-        color: #3498db; /* لون أزرق للعنوان */
+        color: #3498db;
         font-size: 2rem;
         margin-bottom: 15px;
         font-weight: bold;
@@ -180,9 +167,6 @@
         line-height: 1.6;
     }
 
-    /* ------------------------------------------- */
-    /* Testimonials Section - قسم الشهادات */
-    /* ------------------------------------------- */
     .testimonials-section {
         background-color: #2a3d54;
         color: #ecf0f1;
@@ -201,7 +185,7 @@
     }
 
     .testimonial-card {
-        background-color: #3e5b7b; /* خلفية أفتح قليلاً */
+        background-color: #3e5b7b;
         padding: 30px;
         border-radius: 10px;
         margin-bottom: 30px;
@@ -211,7 +195,7 @@
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        min-height: 250px; /* لتوحيد ارتفاع البطاقات */
+        min-height: 250px;
     }
 
     .testimonial-card:hover {
@@ -223,9 +207,9 @@
         font-style: italic;
         font-size: 1.15rem;
         margin-bottom: 20px;
-        color: #ddeffc; /* لون نص الشهادة */
+        color: #ddeffc;
         text-align: center;
-        padding: 0; /* إزالة البادينج الداخلي للفقرة هنا */
+        padding: 0;
     }
 
     .testimonial-card .author {
@@ -234,9 +218,6 @@
         font-size: 1.2rem;
     }
 
-    /* ------------------------------------------- */
-    /* Call to Action Section - قسم الدعوة للعمل */
-    /* ------------------------------------------- */
     .cta-section {
         background: linear-gradient(to right, #f9cf00, #e6b800);
         color: #2c3e50;
@@ -259,11 +240,11 @@
         max-width: 900px;
         margin: 0 auto 40px auto;
         line-height: 1.6;
-        color: #34495e; /* لون نص أغمق قليلاً */
+        color: #34495e;
     }
 
     .cta-button {
-        background-color: #3498db; /* لون أزرق مميز */
+        background-color: #3498db;
         color: white;
         padding: 22px 60px;
         font-size: 2rem;
@@ -283,9 +264,6 @@
         color: white;
     }
 
-    /* ------------------------------------------- */
-    /* Keyframe Animations */
-    /* ------------------------------------------- */
     @keyframes fadeInDown {
         from {
             opacity: 0;
@@ -320,29 +298,27 @@
         }
     }
 
-    /* تعديل عام للحاوية الرئيسية لضمان عدم وجود تداخل أنماط */
     body .container.mt-5 {
-        max-width: 100%; /* استخدام عرض كامل للصفحة الرئيسية */
-        padding: 0; /* إزالة البادينج الافتراضي للحاوية */
-        background-color: transparent; /* جعل الخلفية شفافة لظهور خلفيات الأقسام */
-        box-shadow: none; /* إزالة الظل الافتراضي */
-        margin: 0 auto; /* توسيط الحاوية */
+        max-width: 100%;
+        padding: 0;
+        background-color: transparent;
+        box-shadow: none;
+        margin: 0 auto;
     }
 
-    /* تأكد أن المسافات الجانبية الداخلية لكل قسم يتم التحكم بها داخلياً */
     .hero-section, .features-section, .how-it-works-section, .testimonials-section, .cta-section {
-        width: 90%; /* أو أي عرض مناسب */
-        max-width: 1200px; /* لتحديد أقصى عرض */
+        width: 90%;
+        max-width: 1200px;
         margin-left: auto;
         margin-right: auto;
     }
 
 </style>
 
-<div class="container mt-5 index-page-container"> {# تم تغيير الكلاس للحاوية الرئيسية #}
+<div class="container mt-5 index-page-container">
     <div class="hero-section">
         <h1>اكتشف الوجود الرقمي لاسم المستخدم الخاص بك <span>بثوانٍ</span>!</h1>
-        <p>SocialSpot  هو بوابتك الشاملة للبحث عن أسماء المستخدمين عبر **مئات المنصات والشبكات الاجتماعية**. اكتشف أين يتواجد اسم المستخدم الذي يهمك بسرعة، دقة، وأمان لا مثيل له.</p>
+        <p>SocialSpot هو بوابتك الشاملة للبحث عن أسماء المستخدمين عبر **مئات المنصات والشبكات الاجتماعية**. اكتشف أين يتواجد اسم المستخدم الذي يهمك بسرعة، دقة، وأمان لا مثيل له.</p>
         <a href="{{ url_for('search') }}" class="hero-button">ابدأ البحث الآن</a>
     </div>
 
@@ -350,32 +326,32 @@
         <h3>لماذا تختار SocialSpot؟</h3>
         <div class="row justify-content-center">
             <div class="col-md-4 col-sm-6 feature-item">
-                <i class="fas fa-satellite-dish feature-icon"></i> {# أيقونة تغطية واسعة #}
+                <i class="fas fa-satellite-dish feature-icon"></i>
                 <h4>تغطية شاملة</h4>
                 <p>نبحث في قاعدة بيانات متنامية تضم مئات المنصات الاجتماعية والتكنولوجية لتوفير أوسع نطاق بحث ممكن.</p>
             </div>
             <div class="col-md-4 col-sm-6 feature-item">
-                <i class="fas fa-hourglass-half feature-icon"></i> {# أيقونة سرعة فائقة #}
+                <i class="fas fa-hourglass-half feature-icon"></i>
                 <h4>نتائج فورية</h4>
                 <p>مع تقنيات البحث المتوازية، ستحصل على تقارير مفصلة في غضون ثوانٍ قليلة، لا داعي للانتظار.</p>
             </div>
             <div class="col-md-4 col-sm-6 feature-item">
-                <i class="fas fa-lock feature-icon"></i> {# أيقونة أمان وخصوصية #}
+                <i class="fas fa-lock feature-icon"></i>
                 <h4>خصوصية وأمان</h4>
                 <p>عمليات بحث آمنة تماماً. نستخدم فقط البيانات المتاحة للجمهور ونلتزم بأعلى معايير الخصوصية.</p>
             </div>
             <div class="col-md-4 col-sm-6 feature-item">
-                <i class="fas fa-chart-line feature-icon"></i> {# أيقونة تحليل وتفاصيل #}
+                <i class="fas fa-chart-line feature-icon"></i>
                 <h4>تقارير مفصلة</h4>
                 <p>احصل على معلومات منظمة وسهلة القراءة لكل اسم مستخدم، بما في ذلك الروابط المباشرة للحسابات.</p>
             </div>
             <div class="col-md-4 col-sm-6 feature-item">
-                <i class="fas fa-cogs feature-icon"></i> {# أيقونة سهولة الاستخدام #}
+                <i class="fas fa-cogs feature-icon"></i>
                 <h4>واجهة سهلة الاستخدام</h4>
                 <p>تصميم بديهي ومباشر يضمن تجربة بحث سلسة وفعالة لكل من الخبراء والمبتدئين.</p>
             </div>
             <div class="col-md-4 col-sm-6 feature-item">
-                <i class="fas fa-lightbulb feature-icon"></i> {# أيقونة رؤى #}
+                <i class="fas fa-lightbulb feature-icon"></i>
                 <h4>رؤى قيمة</h4>
                 <p>اكتشف استخدامات أسماء المستخدمين المختلفة، وحدد البصمات الرقمية المتعددة بسهولة.</p>
             </div>
@@ -391,7 +367,7 @@
                 <p>ابدأ بإدخال اسم المستخدم أو أكثر في حقل البحث. يمكنك فصل الأسماء بمسافات أو فواصل.</p>
             </div>
             <div class="col-md-4 step-item">
-                <img  src="{{ url_for('static', filename='images/how-it-works-2.png') }}" alt="Step 2: Choose Platforms">
+                <img src="{{ url_for('static', filename='images/how-it-works-2.png') }}" alt="Step 2: Choose Platforms">
                 <h4>2. حدد المنصات (اختياري)</h4>
                 <p>اختر ما إذا كنت تريد البحث في جميع المنصات أو تحديد منصات معينة للتركيز عليها.</p>
             </div>

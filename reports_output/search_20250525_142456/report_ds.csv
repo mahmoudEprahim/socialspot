@@ -1,0 +1,9 @@
+username,name,url_main,url_user,exists,http_status
+ds,Facebook,,https://www.facebook.com/ds,Claimed,400
+ds,SoundCloud,soundcloud,https://soundcloud.com/ds,Available,404
+ds,GitHub,github,https://github.com/ds,Claimed,200
+ds,YouTube,,https://www.youtube.com/@ds/about,Claimed,200
+ds,Instagram,,https://www.instagram.com/ds,Claimed,200
+ds,TikTok,tiktok,https://www.tiktok.com/@ds,Claimed,200
+ds,Amazon,Amazon,https://amazon.com/author/ds,Available,404
+ds,Reddit,Reddit,https://www.reddit.com/user/ds,Available,200

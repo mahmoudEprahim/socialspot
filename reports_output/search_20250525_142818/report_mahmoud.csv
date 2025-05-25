@@ -1,0 +1,9 @@
+username,name,url_main,url_user,exists,http_status
+mahmoud,Facebook,,https://www.facebook.com/mahmoud,Claimed,400
+mahmoud,SoundCloud,soundcloud,https://soundcloud.com/mahmoud,Claimed,200
+mahmoud,YouTube,,https://www.youtube.com/@mahmoud/about,Claimed,200
+mahmoud,Instagram,,https://www.instagram.com/mahmoud,Claimed,200
+mahmoud,GitHub,github,https://github.com/mahmoud,Claimed,200
+mahmoud,TikTok,tiktok,https://www.tiktok.com/@mahmoud,Claimed,200
+mahmoud,Reddit,Reddit,https://www.reddit.com/user/mahmoud,Available,200
+mahmoud,Amazon,Amazon,https://amazon.com/author/mahmoud,Claimed,200

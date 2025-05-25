@@ -2,11 +2,7 @@
 
 {% block content %}
 <style>
-    /* ------------------------------------------- */
-    /* أنماط خاصة بصفحة Contact Us */
-    /* ------------------------------------------- */
     .contact-page {
-        /* max-width: 900px; */
         margin: 60px auto;
         padding: 50px;
         background-color: #34495e;
@@ -17,7 +13,6 @@
         line-height: 1.7;
     }
 
-    /* تنسيق العنوان الرئيسي H2 */
     .contact-page h2 {
         color: #f9cf00;
         font-size: 2.5rem;
@@ -56,10 +51,10 @@
         border-radius: 10px;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-        display: flex; /* لترتيب المحتوى الداخلي للبطاقة */
-        flex-direction: column; /* لجعل المحتوى يترتب عمودياً */
-        justify-content: center; /* توسيط المحتوى عمودياً */
-        align-items: center; /* توسيط المحتوى أفقياً */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     .contact-page .card:hover {
@@ -106,7 +101,6 @@
         margin-top: 5rem;
     }
 
-    /* تحسينات عامة للروابط داخل هذه الصفحة */
     .contact-page a {
         color: #3498db;
         text-decoration: none;
@@ -118,16 +112,15 @@
         text-decoration: underline;
     }
 
-    /* أنماط الأيقونات */
     .contact-icon {
-        font-size: 3.5rem; /* حجم كبير للأيقونات */
-        color: #f9cf00; /* لون الأيقونات */
-        margin-bottom: 1rem; /* مسافة أسفل الأيقونة */
-        transition: transform 0.3s ease; /* أنيميشن عند التحويم */
+        font-size: 3.5rem;
+        color: #f9cf00;
+        margin-bottom: 1rem;
+        transition: transform 0.3s ease;
     }
 
     .contact-page .card:hover .contact-icon {
-        transform: scale(1.1); /* تكبير الأيقونة عند التحويم على البطاقة */
+        transform: scale(1.1);
     }
 
 </style>
@@ -141,7 +134,7 @@
     <div class="row mt-5">
         <div class="col-md-6 mb-4">
             <div class="card text-center p-4 h-100">
-                <i class="fa-solid fa-envelope contact-icon"></i> {# أيقونة البريد الإلكتروني #}
+                <i class="fa-solid fa-envelope contact-icon"></i>
                 <h4 class="card-title">البريد الإلكتروني</h4>
                 <p class="card-text">للاستفسارات العامة والدعم الفني:</p>
                 <p class="card-text lead-email">
@@ -152,7 +145,7 @@
         </div>
         <div class="col-md-6 mb-4">
             <div class="card text-center p-4 h-100">
-                <i class="fa-solid fa-phone-volume contact-icon"></i> {# أيقونة الهاتف #}
+                <i class="fa-solid fa-phone-volume contact-icon"></i>
                 <h4 class="card-title">الدعم عبر الهاتف (قريباً)</h4>
                 <p class="card-text">نعمل على توفير دعم هاتفي لتقديم مساعدة فورية. تابعونا للمزيد من التحديثات.</p>
                 <p class="card-text lead-phone-number">+1 (XXX) XXX-XXXX</p>

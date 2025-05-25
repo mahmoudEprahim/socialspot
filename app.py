@@ -1,9 +1,7 @@
 import os
 import sys
 
-# الحصول على المسار المطلق للمجلد الذي يحتوي على app.py (جذر المشروع)
 current_dir = os.path.dirname(os.path.abspath(__file__))
-
 
 if current_dir not in sys.path:
     sys.path.append(current_dir)
@@ -36,18 +34,13 @@ static_folder_path =os.path.join(current_dir, 'socialspot', 'web', 'static')
 app = Flask(__name__, template_folder=template_folder_path ,static_folder=static_folder_path )
 app.secret_key = 'your-secret-key-here'
 
-# add background job tracking
 background_jobs = {}
 job_results = {}
 
-# Configuration
 socialspot_DB_FILE = os.path.join('socialspot', 'resources', 'data.json')
-COOKIES_FILE = "cookies.txt"
 
-# اجعل مجلد التقارير داخل مجلد المشروع في مجلد اسمه 'reports_output'
 REPORTS_FOLDER = os.path.join(current_dir, 'reports_output')
 
-# تأكد من إنشاء مجلد التقارير
 os.makedirs(REPORTS_FOLDER, exist_ok=True)
 
 
@@ -57,7 +50,6 @@ def setup_logger(log_level, name):
     return logger
 
 
-# دالة البحث الرئيسية
 async def socialspot_search(username, options):
     logger = setup_logger(logging.WARNING, 'socialspot')
     try:
@@ -65,7 +57,7 @@ async def socialspot_search(username, options):
 
         top_sites = int(options.get('top_sites') or 500)
         if options.get('all_sites'):
-            top_sites = 999999999  # effectively all
+            top_sites = 999999999
 
         tags = options.get('tags', [])
         site_list = options.get('site_list', [])
@@ -87,7 +79,6 @@ async def socialspot_search(username, options):
             timeout=int(options.get('timeout', 30)),
             logger=logger,
             id_type='username',
-            cookies=COOKIES_FILE if options.get('use_cookies') else None,
             is_parsing_enabled=(not options.get('disable_extracting', False)),
             recursive_search_enabled=(not options.get('disable_recursive_search', False)),
             check_domains=options.get('with_domains', False),
@@ -187,7 +178,6 @@ def process_search_task(usernames, options, timestamp):
                 }
             )
 
-        # save results and mark job as complete using timestamp as key
         job_results[timestamp] = {
             'status': 'completed',
             'session_folder': f"search_{timestamp}",
@@ -204,37 +194,29 @@ def process_search_task(usernames, options, timestamp):
 
 @app.route('/')
 def index():
-  
     return render_template('index.html')
 
 @app.route('/search')
 def search_page():
-    # load site data for autocomplete
     db = socialspotDatabase().load_from_path(socialspot_DB_FILE)
     site_options = []
 
     for site in db.sites:
-        # add main site name
         site_options.append(site.name)
-        # add URL if different from name
         if site.url_main and site.url_main not in site_options:
             site_options.append(site.url_main)
 
-    # sort and deduplicate
     site_options = sorted(set(site_options))
 
     return render_template('search.html', site_options=site_options)
 @app.route('/about')
 def about():
-  
     return render_template('about.html')
 
 @app.route('/contact')
 def contact():
-
     return render_template('contact.html')
 
-# Modified search route
 @app.route('/search', methods=['POST'])
 def search():
     usernames_input = request.form.get('usernames', '').strip()
@@ -248,29 +230,18 @@ def search():
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-    # Get selected tags - ensure it's a list
     selected_tags = request.form.getlist('tags')
     logging.info(f"Selected tags: {selected_tags}")
 
     options = {
         'top_sites': request.form.get('top_sites') or '500',
         'timeout': request.form.get('timeout') or '90',
-        # 'use_cookies': 'use_cookies' in request.form, # هذه الخيارات معطلة حاليًا
         'all_sites': 'all_sites' in request.form,
-        # 'disable_recursive_search': 'disable_recursive_search' in request.form,
-        # 'disable_extracting': 'disable_extracting' in request.form,
-        # 'with_domains': 'with_domains' in request.form,
-        # 'proxy': request.form.get('proxy', None) or None,
-        # 'tor_proxy': request.form.get('tor_proxy', None) or None,
-        # 'i2p_proxy': request.form.get('i2p_proxy', None) or None,
-        # 'permute': 'permute' in request.form,
-        # 'tags': selected_tags,  # Pass selected tags as a list
         'site_list': [s.strip() for s in request.form.get('site', '').split(',') if s.strip()],
     }
     logging.info(f"DEBUG: Final options sent to socialspot: {options}")
     logging.info(f"Starting search for usernames: {usernames} with tags: {selected_tags}")
 
-    # Start background job
     background_jobs[timestamp] = {
         'completed': False,
         'thread': Thread(
@@ -285,13 +256,11 @@ def search():
 def status(timestamp):
     logging.info(f"Status check for timestamp: {timestamp}")
 
-    # Validate timestamp
     if timestamp not in background_jobs:
         flash('Invalid search session.', 'danger')
         logging.error(f"Invalid search session: {timestamp}")
         return redirect(url_for('index'))
 
-    # Check if job is completed
     if background_jobs[timestamp]['completed']:
         result = job_results.get(timestamp)
         if not result:
@@ -300,7 +269,6 @@ def status(timestamp):
             return redirect(url_for('index'))
 
         if result['status'] == 'completed':
-            # Note: use the session_folder from the results to redirect
             return redirect(url_for('results', session_id=result['session_folder']))
         else:
             error_msg = result.get('error', 'Unknown error occurred.')
@@ -308,13 +276,11 @@ def status(timestamp):
             logging.error(f"Search failed for session {timestamp}: {error_msg}")
             return redirect(url_for('index'))
 
-    # If job is still running, show a status page
     return render_template('status.html', timestamp=timestamp)
 
 
 @app.route('/results/<session_id>')
 def results(session_id):
-    # Find completed results that match this session_folder
     result_data = next(
         (
             r
@@ -342,7 +308,6 @@ def results(session_id):
 def download_report(filename):
     try:
         file_path = os.path.normpath(os.path.join(REPORTS_FOLDER, filename))
-        # لزيادة الأمان، تأكد أن المسار لا يخرج عن مجلد التقارير
         if not file_path.startswith(REPORTS_FOLDER):
             raise Exception("Invalid file path attempted")
         return send_file(file_path)
@@ -356,7 +321,6 @@ if __name__ == '__main__':
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     )
-    # يمكنك ضبط مستويات التسجيل للمكتبة لتصحيح الأخطاء إذا لزم الأمر
     logging.getLogger('socialspot.search').setLevel(logging.DEBUG)
     logging.getLogger('socialspot.site').setLevel(logging.DEBUG)
 
