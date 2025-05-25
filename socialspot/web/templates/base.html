@@ -7,6 +7,7 @@
     <title>Social Spot</title> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.75.66 2.97 1.83 2.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
         /* Base styles for the body */
@@ -154,8 +155,9 @@
     }
 
     .header .logo-icon {
-        width: 116px; /* Slightly smaller icon */
-        height: 38px; /* Slightly smaller icon */
+
+  width: 200px;
+    height: 90px;
     }
 
     .header .h4 {
@@ -175,6 +177,45 @@
     .logo-link{
         text-decoration: none;
     }
+/* الأساسي لـ header-content لجعل الشعار والأكشنز بجانب بعض */
+.header-content {
+    display: flex;
+    /* هذا يوزع المساحة: الشعار في البداية، ثم روابط التنقل والأزرار في المنتصف، ثم زر التبديل في النهاية (ليس تمامًا، سيتم توضيحه لاحقًا) */
+    justify-content: space-between;
+    align-items: center; /* لمحاذاة العناصر عموديًا في المنتصف */
+    width: 100%; /* تأكد أن المحتوى يملأ العرض المتاح */
+}
+
+.header-actions {
+    display: flex; /* لترتيب الروابط وزر التبديل جنبًا إلى جنب */
+    align-items: center; /* لمحاذاة العناصر عموديًا في المنتصف */
+    flex-grow: 1; /* للسماح له بالتمدد وأخذ المساحة المتاحة */
+    justify-content: center; /* **هذا هو المفتاح للمنتصف** - سيقوم بوضع الروابط في المنتصف */
+    gap: 15px; /* مسافة بين العناصر */
+}
+
+/* يمكنك ضبط مسافة الشعار إذا لزم الأمر */
+.logo-container {
+    /* قد لا تحتاج لتغيير هنا إذا كان الشعار يظهر جيدًا */
+    flex-shrink: 0; /* يمنع الشعار من التقلص */
+}
+
+.header-actions .header-nav-link {
+    /* color: --bs-body-color;  */
+    color: var(--bs-body-color); 
+    text-decoration: none; 
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.header-actions .header-nav-link:hover {
+    color: #f9cf00;
+}
+
+.header-actions #theme-toggle {
+    /* يمكنك ضبط الهوامش هنا إذا كنت تريد أن يكون زر التبديل بعيدًا عن الروابط */
+    margin-left: 20px; /* مثال: لإضافة مسافة من الروابط */
+}
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .header-content {
@@ -199,18 +240,26 @@
         <div class="header-content">
             <div class="logo-container">
                 <a href="{{ url_for('index') }}" class="logo-link" aria-label="Go to Home Page">
-                    <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <!-- <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 22s-8-4-8-10V5l8-3 8 3v7c0 6-8 10-8 10z"></path>
                         <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
-                    <h1 class="h4 mb-0">Social Spot</h1>
+                    </svg> -->
+                        <img src="{{ url_for('static', filename='images/home2.png') }}" alt="SocialSpot Overview" class="logo-icon">
+
+                    <h1 class="h4 text-center">Social Spot</h1>
                 </a>
             </div>
             <div class="header-actions">
-                <button class="btn btn-outline-secondary" id="theme-toggle">
-                    Toggle Dark/Light Mode
-                </button>
+                <a class="btn btn-link header-nav-link" href="{{ url_for('index') }}"> <i class="fas fa-home"></i> Home</a>
+                <a class="btn btn-link header-nav-link" href="{{ url_for('about') }}"> About</a>
+                <a class="btn btn-link header-nav-link" href="{{ url_for('contact') }}"> Contact</a>
+                <a class="btn btn-link header-nav-link" href="{{ url_for('search_page') }}"> <i class="fas fa-search"></i> Search </a>
+
+             
             </div>
+               <button class="btn btn-secondary" id="theme-toggle">
+                    Dark/Light
+                </button>
         </div>
     </div>
 </div>
@@ -221,10 +270,36 @@
         </div>
     </div>
 
-    <footer class="footer">
+<footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Social Spot. All rights reserved.</p>
-          
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>عن SocialSpot</h5>
+                    <p>SocialSpot هي أداتك الموثوقة للبحث عن أسماء المستخدمين عبر مختلف المنصات والشبكات الاجتماعية. نلتزم بتوفير بحث سريع، دقيق، ومسؤول يحترم خصوصيتك.</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>روابط سريعة</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('index') }}">الرئيسية</a></li>
+                        <li><a href="{{ url_for('search') }}">ابدأ البحث</a></li>
+                        <li><a href="{{ url_for('about') }}">عنا</a></li> {# تأكد من اسم الدالة في app.py #}
+                        <li><a href="{{ url_for('contact') }}">اتصل بنا</a></li> {# تأكد من اسم الدالة في app.py #}
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>تواصل معنا</h5>
+                    <p>ابقَ على اطلاع بأحدث التحديثات والأخبار.</p>
+                    <div class="social-icons">
+                        <a href="#" target="_blank" aria-label="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" target="_blank" aria-label="تويتر"><i class="fab fa-twitter"></i></a>
+                        <a href="#" target="_blank" aria-label="لينكدإن"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" target="_blank" aria-label="جيت هاب"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SocialSpot. جميع الحقوق محفوظة.</p>
+            </div>
         </div>
     </footer>
 

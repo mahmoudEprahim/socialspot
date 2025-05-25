@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* ------------------------------------------- */
+    /* أنماط خاصة بصفحة Contact Us */
+    /* ------------------------------------------- */
+    .contact-page {
+        /* max-width: 900px; */
+        margin: 60px auto;
+        padding: 50px;
+        background-color: #34495e;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        color: #ecf0f1;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        line-height: 1.7;
+    }
+
+    /* تنسيق العنوان الرئيسي H2 */
+    .contact-page h2 {
+        color: #f9cf00;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 2.5rem;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    .contact-page h2::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background-color: #f9cf00;
+        border-radius: 2px;
+    }
+
+    .contact-page .lead-paragraph {
+        font-size: 1.25rem;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 0 15px;
+    }
+
+    .contact-page .card {
+        background-color: #2a3d54;
+        border: 1px solid #4a688b;
+        border-radius: 10px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex; /* لترتيب المحتوى الداخلي للبطاقة */
+        flex-direction: column; /* لجعل المحتوى يترتب عمودياً */
+        justify-content: center; /* توسيط المحتوى عمودياً */
+        align-items: center; /* توسيط المحتوى أفقياً */
+    }
+
+    .contact-page .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    .contact-page .card-title {
+        color: #f9cf00;
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+    }
+
+    .contact-page .card-text {
+        color: #bdc3c7;
+        font-size: 1.05rem;
+    }
+
+    .contact-page .card-text.lead-email a,
+    .contact-page .card-text.lead-phone-number {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #3498db;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .contact-page .card-text.lead-email a:hover {
+        color: #2980b9;
+        text-decoration: underline;
+    }
+
+    .contact-page .card-text.small-text {
+        font-size: 0.9rem;
+        color: #8c9fa8;
+        margin-top: 1rem;
+    }
+
+    .contact-page .footer-text {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #bdc3c7;
+        margin-top: 5rem;
+    }
+
+    /* تحسينات عامة للروابط داخل هذه الصفحة */
+    .contact-page a {
+        color: #3498db;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .contact-page a:hover {
+        color: #2980b9;
+        text-decoration: underline;
+    }
+
+    /* أنماط الأيقونات */
+    .contact-icon {
+        font-size: 3.5rem; /* حجم كبير للأيقونات */
+        color: #f9cf00; /* لون الأيقونات */
+        margin-bottom: 1rem; /* مسافة أسفل الأيقونة */
+        transition: transform 0.3s ease; /* أنيميشن عند التحويم */
+    }
+
+    .contact-page .card:hover .contact-icon {
+        transform: scale(1.1); /* تكبير الأيقونة عند التحويم على البطاقة */
+    }
+
+</style>
+
+<div class="container mt-5 contact-page">
+    <h2 class="text-center mb-4">تواصل معنا</h2>
+    <p class="text-center lead-paragraph">
+        نحن هنا للإجابة على جميع استفساراتك ومساعدتك بأي طريقة ممكنة. سواء كان لديك سؤال، اقتراح لتحسين الخدمة، أو واجهت أي مشكلة، فلا تتردد في التواصل معنا عبر الطرق التالية:
+    </p>
+
+    <div class="row mt-5">
+        <div class="col-md-6 mb-4">
+            <div class="card text-center p-4 h-100">
+                <i class="fa-solid fa-envelope contact-icon"></i> {# أيقونة البريد الإلكتروني #}
+                <h4 class="card-title">البريد الإلكتروني</h4>
+                <p class="card-text">للاستفسارات العامة والدعم الفني:</p>
+                <p class="card-text lead-email">
+                    <a href="mailto:support@socialspot.com">support@socialspot.com</a>
+                </p>
+                <p class="card-text small-text">سنقوم بالرد على رسائلك في أقرب وقت ممكن، عادةً في غضون 24-48 ساعة.</p>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card text-center p-4 h-100">
+                <i class="fa-solid fa-phone-volume contact-icon"></i> {# أيقونة الهاتف #}
+                <h4 class="card-title">الدعم عبر الهاتف (قريباً)</h4>
+                <p class="card-text">نعمل على توفير دعم هاتفي لتقديم مساعدة فورية. تابعونا للمزيد من التحديثات.</p>
+                <p class="card-text lead-phone-number">+1 (XXX) XXX-XXXX</p>
+                <p class="card-text small-text">هذه الخدمة ستكون متاحة قريباً لتقديم دعم مباشر.</p>
+            </div>
+        </div>
+    </div>
+
+    <p class="text-center mt-5 footer-text" style="direction: rtl;">شكراً لاهتمامك بـ SocialSpot !</p>
+</div>
+{% endblock %}

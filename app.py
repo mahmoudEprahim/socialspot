@@ -1,3 +1,13 @@
+import os
+import sys
+
+# الحصول على المسار المطلق للمجلد الذي يحتوي على app.py (جذر المشروع)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
+
 from flask import (
     Flask,
     render_template,
@@ -9,29 +19,35 @@ from flask import (
     url_for,
 )
 import logging
-import os
 import asyncio
 from datetime import datetime
 from threading import Thread
-import socialspot # هذا السطر سيتم تغييره
-import socialspot.settings # هذا السطر سيتم تغييره
+
+import socialspot
+import socialspot.settings
 from socialspot.sites import socialspotDatabase
 from socialspot.report import generate_report_context
+import socialspot.result
 
-app = Flask(__name__)
+
+
+template_folder_path = os.path.join(current_dir, 'socialspot', 'web', 'templates')
+static_folder_path =os.path.join(current_dir, 'socialspot', 'web', 'static')
+app = Flask(__name__, template_folder=template_folder_path ,static_folder=static_folder_path )
 app.secret_key = 'your-secret-key-here'
 
-#add background job tracking
+# add background job tracking
 background_jobs = {}
 job_results = {}
 
 # Configuration
-socialspot_DB_FILE = os.path.join('socialspot', 'resources', 'data.json') # هذا المسار سيبقى كما هو إذا كان ملف قاعدة البيانات يتبع نفس هيكل socialspot الأصلي
+socialspot_DB_FILE = os.path.join('socialspot', 'resources', 'data.json')
 COOKIES_FILE = "cookies.txt"
-# /UPLOAD_FOLDER = 'uploads'
-REPORTS_FOLDER = os.path.abspath('/tmp/socialspot_reports') # تم تغيير اسم المجلد هنا
 
-# os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# اجعل مجلد التقارير داخل مجلد المشروع في مجلد اسمه 'reports_output'
+REPORTS_FOLDER = os.path.join(current_dir, 'reports_output')
+
+# تأكد من إنشاء مجلد التقارير
 os.makedirs(REPORTS_FOLDER, exist_ok=True)
 
 
@@ -42,19 +58,19 @@ def setup_logger(log_level, name):
 
 
 # دالة البحث الرئيسية
-async def socialspot_search(username, options): # تم تغيير اسم الدالة
-    logger = setup_logger(logging.WARNING, 'socialspot') # تم تغيير اسم الـ logger
+async def socialspot_search(username, options):
+    logger = setup_logger(logging.WARNING, 'socialspot')
     try:
         db = socialspotDatabase().load_from_path(socialspot_DB_FILE)
-        
-        top_sites = int(options.get('top_sites') or 500) 
+
+        top_sites = int(options.get('top_sites') or 500)
         if options.get('all_sites'):
-            top_sites = 999999999   # effectively all
-        
+            top_sites = 999999999  # effectively all
+
         tags = options.get('tags', [])
-        site_list= options.get('site_list', [])
+        site_list = options.get('site_list', [])
         logger.info(f"Filtering sites by tags: {tags}")
-        
+
         sites = db.ranked_sites_dict(
             top=top_sites,
             tags=tags,
@@ -62,17 +78,17 @@ async def socialspot_search(username, options): # تم تغيير اسم الد�
             disabled=False,
             id_type='username'
         )
-        
+
         logger.info(f"Found {len(sites)} sites matching the tag criteria")
 
-        results = await socialspot.search( # هنا، socialspot.search هو الاسم الداخلي للدالة في مكتبة socialspot، لا ينبغي تغييره
+        results = await socialspot.search(
             username=username,
             site_dict=sites,
             timeout=int(options.get('timeout', 30)),
             logger=logger,
             id_type='username',
             cookies=COOKIES_FILE if options.get('use_cookies') else None,
-            is_parsing_enabled=(not options.get('disable_extracting', False)),  
+            is_parsing_enabled=(not options.get('disable_extracting', False)),
             recursive_search_enabled=(not options.get('disable_recursive_search', False)),
             check_domains=options.get('with_domains', False),
             proxy=options.get('proxy', None),
@@ -89,7 +105,7 @@ async def search_multiple_usernames(usernames, options):
     results = []
     for username in usernames:
         try:
-            search_results = await socialspot_search(username.strip(), options) # تم تغيير اسم الدالة
+            search_results = await socialspot_search(username.strip(), options)
             results.append((username.strip(), 'username', search_results))
         except Exception as e:
             logging.error(f"Error searching username {username}: {str(e)}")
@@ -109,7 +125,7 @@ def process_search_task(usernames, options, timestamp):
         os.makedirs(session_folder, exist_ok=True)
 
         graph_path = os.path.join(session_folder, "combined_graph.html")
-        socialspot.report.save_graph_report( # لا ينبغي تغيير هذا السطر لأن socialspot.report جزء من المكتبة
+        socialspot.report.save_graph_report(
             graph_path,
             general_results,
             socialspotDatabase().load_from_path(socialspot_DB_FILE),
@@ -126,19 +142,19 @@ def process_search_task(usernames, options, timestamp):
 
             context = generate_report_context(general_results)
 
-            socialspot.report.save_csv_report(csv_path, username, results) # لا ينبغي تغيير هذا السطر
-            socialspot.report.save_json_report( # لا ينبغي تغيير هذا السطر
+            socialspot.report.save_csv_report(csv_path, username, results)
+            socialspot.report.save_json_report(
                 json_path, username, results, report_type='ndjson'
             )
-            socialspot.report.save_pdf_report(pdf_path, context) # لا ينبغي تغيير هذا السطر
-            socialspot.report.save_html_report(html_path, context) # لا ينبغي تغيير هذا السطر
+            socialspot.report.save_pdf_report(pdf_path, context)
+            socialspot.report.save_html_report(html_path, context)
 
             claimed_profiles = []
             for site_name, site_data in results.items():
                 if (
                     site_data.get('status')
                     and site_data['status'].status
-                    == socialspot.result.socialspotCheckStatus.CLAIMED # لا ينبغي تغيير هذا السطر
+                    == socialspot.result.socialspotCheckStatus.CLAIMED
                 ):
                     claimed_profiles.append(
                         {
@@ -186,25 +202,37 @@ def process_search_task(usernames, options, timestamp):
     finally:
         background_jobs[timestamp]['completed'] = True
 
-
 @app.route('/')
 def index():
-    #load site data for autocomplete
+  
+    return render_template('index.html')
+
+@app.route('/search')
+def search_page():
+    # load site data for autocomplete
     db = socialspotDatabase().load_from_path(socialspot_DB_FILE)
     site_options = []
-    
+
     for site in db.sites:
-        #add main site name
+        # add main site name
         site_options.append(site.name)
-        #add URL if different from name
+        # add URL if different from name
         if site.url_main and site.url_main not in site_options:
             site_options.append(site.url_main)
-    
-    #sort and deduplicate
-    site_options = sorted(set(site_options))
-    
-    return render_template('index.html', site_options=site_options)
 
+    # sort and deduplicate
+    site_options = sorted(set(site_options))
+
+    return render_template('search.html', site_options=site_options)
+@app.route('/about')
+def about():
+  
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+
+    return render_template('contact.html')
 
 # Modified search route
 @app.route('/search', methods=['POST'])
@@ -218,7 +246,6 @@ def search():
         u.strip() for u in usernames_input.replace(',', ' ').split() if u.strip()
     ]
 
-
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     # Get selected tags - ensure it's a list
@@ -228,7 +255,7 @@ def search():
     options = {
         'top_sites': request.form.get('top_sites') or '500',
         'timeout': request.form.get('timeout') or '90',
-        # 'use_cookies': 'use_cookies' in request.form,
+        # 'use_cookies': 'use_cookies' in request.form, # هذه الخيارات معطلة حاليًا
         'all_sites': 'all_sites' in request.form,
         # 'disable_recursive_search': 'disable_recursive_search' in request.form,
         # 'disable_extracting': 'disable_extracting' in request.form,
@@ -237,7 +264,7 @@ def search():
         # 'tor_proxy': request.form.get('tor_proxy', None) or None,
         # 'i2p_proxy': request.form.get('i2p_proxy', None) or None,
         # 'permute': 'permute' in request.form,
-        # 'tags': selected_tags,   # Pass selected tags as a list
+        # 'tags': selected_tags,  # Pass selected tags as a list
         'site_list': [s.strip() for s in request.form.get('site', '').split(',') if s.strip()],
     }
     logging.info(f"DEBUG: Final options sent to socialspot: {options}")
@@ -315,8 +342,9 @@ def results(session_id):
 def download_report(filename):
     try:
         file_path = os.path.normpath(os.path.join(REPORTS_FOLDER, filename))
+        # لزيادة الأمان، تأكد أن المسار لا يخرج عن مجلد التقارير
         if not file_path.startswith(REPORTS_FOLDER):
-            raise Exception("Invalid file path")
+            raise Exception("Invalid file path attempted")
         return send_file(file_path)
     except Exception as e:
         logging.error(f"Error serving file {filename}: {str(e)}")
@@ -328,7 +356,9 @@ if __name__ == '__main__':
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     )
-logging.getLogger('socialspot.search').setLevel(logging.DEBUG)
-logging.getLogger('socialspot.site').setLevel(logging.DEBUG)
-debug_mode = os.getenv('FLASK_DEBUG', 'true').lower() in ['true', '1', 't']
-app.run(debug=debug_mode)
+    # يمكنك ضبط مستويات التسجيل للمكتبة لتصحيح الأخطاء إذا لزم الأمر
+    logging.getLogger('socialspot.search').setLevel(logging.DEBUG)
+    logging.getLogger('socialspot.site').setLevel(logging.DEBUG)
+
+    debug_mode = os.getenv('FLASK_DEBUG', 'true').lower() in ['true', '1', 't']
+    app.run(debug=debug_mode)
