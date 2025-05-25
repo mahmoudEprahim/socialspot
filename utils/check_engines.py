@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Maigret: Supported Site Listing with Alexa ranking and country tags
+"""socialspot: Supported Site Listing with Alexa ranking and country tags
 This module generates the listing of supported sites in file `SITES.md`
 and pretty prints file with sites data.
 """
@@ -8,8 +8,8 @@ import json
 import logging
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
-from maigrets.maigret import get_response
-from maigrets.sites import MaigretDatabase, MaigretEngine
+from socialspots.socialspot import get_response
+from socialspots.sites import socialspotDatabase, socialspotEngine
 
 async def check_engine_of_site(site_name, sites_with_engines, future, engine_name, semaphore, logger):
     async with semaphore:
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter
                             )
     parser.add_argument("--base","-b", metavar="BASE_FILE",
-                        dest="base_file", default="maigret/resources/data.json",
+                        dest="base_file", default="socialspot/resources/data.json",
                         help="JSON file with sites data to update.")
 
     parser.add_argument('--engine', '-e', help='check only selected engine', type=str)
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     logger = logging.getLogger('engines-check')
     logger.setLevel(log_level)
 
-    db = MaigretDatabase()
+    db = socialspotDatabase()
     sites_subset = db.load_from_file(args.base_file).sites
     sites = {site.name: site for site in sites_subset}
 
@@ -61,7 +61,7 @@ if __name__ == '__main__':
             print(f'No features to automatically detect sites on engine {engine_name}')
             continue
 
-        engine_obj = MaigretEngine(engine_name, engine_data)
+        engine_obj = socialspotEngine(engine_name, engine_data)
 
         # setup connections for checking both engine and usernames
         connector = aiohttp.TCPConnector(ssl=False)

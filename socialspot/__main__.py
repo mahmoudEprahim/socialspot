@@ -1,12 +1,12 @@
 #! /usr/bin/env python3
 
 """
-Maigret entrypoint
+socialspot entrypoint
 """
 
 import asyncio
 
-from .maigret import main
+from .socialspot import main
 
 if __name__ == "__main__":
     asyncio.run(main())

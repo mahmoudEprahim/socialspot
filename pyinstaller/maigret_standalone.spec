@@ -5,7 +5,7 @@ datas = []
 binaries = []
 hiddenimports = []
 
-full_import_modules = ['maigret', 'socid_extractor', 'arabic_reshaper', 'pyvis', 'reportlab.graphics.barcode']
+full_import_modules = ['socialspot', 'socid_extractor', 'arabic_reshaper', 'pyvis', 'reportlab.graphics.barcode']
 
 for module in full_import_modules:
     tmp_ret = collect_all(module)
@@ -18,7 +18,7 @@ hiddenimports += ['PySocks', 'beautifulsoup4', 'python-dateutil',
 block_cipher = None
 
 
-a = Analysis(['maigret_standalone.py'],
+a = Analysis(['socialspot_standalone.py'],
              pathex=[],
              binaries=binaries,
              datas=datas,
@@ -41,7 +41,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,  
           [],
-          name='maigret_standalone',
+          name='socialspot_standalone',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,

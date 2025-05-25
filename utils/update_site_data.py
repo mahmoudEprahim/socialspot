@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Maigret: Supported Site Listing with Alexa ranking and country tags
+"""socialspot: Supported Site Listing with Alexa ranking and country tags
 This module generates the listing of supported sites in file `SITES.md`
 and pretty prints file with sites data.
 """
@@ -11,7 +11,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
-from maigrets.maigret import MaigretDatabase
+from socialspots.socialspot import socialspotDatabase
 
 RANKS = {str(i):str(i) for i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 50, 100, 500]}
 RANKS.update({
@@ -71,7 +71,7 @@ def main():
     parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter
                             )
     parser.add_argument("--base","-b", metavar="BASE_FILE",
-                        dest="base_file", default="maigret/resources/data.json",
+                        dest="base_file", default="socialspot/resources/data.json",
                         help="JSON file with sites data to update.")
 
     parser.add_argument('--with-rank', help='update with use of local data only', action='store_true')
@@ -83,7 +83,7 @@ def main():
 
     args = parser.parse_args()
 
-    db = MaigretDatabase()
+    db = socialspotDatabase()
     sites_subset = db.load_from_file(args.base_file).sites
 
     print(f"\nUpdating supported sites list (don't worry, it's needed)...")

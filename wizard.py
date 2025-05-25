@@ -13,7 +13,7 @@ def main():
     logger.setLevel(logging.WARNING)
     loop = asyncio.get_event_loop()
 
-    db = socialspot.MaigretDatabase().load_from_file('./socialspot/resources/data.json')
+    db = socialspot.socialspotDatabase().load_from_file('./socialspot/resources/data.json')
 
     username = input('Enter username to search: ')
     sites_count = (

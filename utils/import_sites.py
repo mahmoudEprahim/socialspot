@@ -7,20 +7,20 @@ import alive_progress
 from mock import Mock
 import requests
 
-from maigrets.maigret import *
-from maigrets.result import MaigretCheckStatus
-from maigrets.sites import MaigretSite
+from socialspots.socialspot import *
+from socialspots.result import socialspotCheckStatus
+from socialspots.sites import socialspotSite
 
 URL_RE = re.compile(r"https?://(www\.)?")
 TIMEOUT = 200
 
 
-async def maigret_check(site, site_data, username, status, logger):
+async def socialspot_check(site, site_data, username, status, logger):
     query_notify = Mock()
     logger.debug(f'Checking {site}...')
 
     for username, status in [(username, status)]:
-        results = await maigret(
+        results = await socialspot(
             username,
             {site: site_data},
             logger,
@@ -31,7 +31,7 @@ async def maigret_check(site, site_data, username, status, logger):
         )
 
         if results[site]['status'].status != status:
-            if results[site]['status'].status == MaigretCheckStatus.UNKNOWN:
+            if results[site]['status'].status == socialspotCheckStatus.UNKNOWN:
                 msg = site_data.absence_strs
                 etype = site_data.check_type
                 context = results[site]['status'].context
@@ -41,7 +41,7 @@ async def maigret_check(site, site_data, username, status, logger):
                 #     continue
                 return False
 
-            if status == MaigretCheckStatus.CLAIMED:
+            if status == socialspotCheckStatus.CLAIMED:
                 logger.debug(f'Not found {username} in {site}, must be claimed')
                 logger.debug(results[site])
                 pass
@@ -54,7 +54,7 @@ async def maigret_check(site, site_data, username, status, logger):
     return site_data
 
 
-async def check_and_add_maigret_site(site_data, semaphore, logger, ok_usernames, bad_usernames):
+async def check_and_add_socialspot_site(site_data, semaphore, logger, ok_usernames, bad_usernames):
     async with semaphore:
         sitename = site_data.name
         positive = False
@@ -62,16 +62,16 @@ async def check_and_add_maigret_site(site_data, semaphore, logger, ok_usernames,
 
         for ok_username in ok_usernames:
             site_data.username_claimed = ok_username
-            status = MaigretCheckStatus.CLAIMED
-            if await maigret_check(sitename, site_data, ok_username, status, logger):
+            status = socialspotCheckStatus.CLAIMED
+            if await socialspot_check(sitename, site_data, ok_username, status, logger):
                 # print(f'{sitename} positive case is okay')
                 positive = True
                 break
 
         for bad_username in bad_usernames:
             site_data.username_unclaimed = bad_username
-            status = MaigretCheckStatus.AVAILABLE
-            if await maigret_check(sitename, site_data, bad_username, status, logger):
+            status = socialspotCheckStatus.AVAILABLE
+            if await socialspot_check(sitename, site_data, bad_username, status, logger):
                 # print(f'{sitename} negative case is okay')
                 negative = True
                 break
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter
                             )
     parser.add_argument("--base", "-b", metavar="BASE_FILE",
-                        dest="base_file", default="maigret/resources/data.json",
+                        dest="base_file", default="socialspot/resources/data.json",
                         help="JSON file with sites data to update.")
 
     parser.add_argument("--add-engine", dest="add_engine", help="Additional engine to check")
@@ -160,7 +160,7 @@ if __name__ == '__main__':
     logger = logging.getLogger('engines-check')
     logger.setLevel(log_level)
 
-    db = MaigretDatabase()
+    db = socialspotDatabase()
     sites_subset = db.load_from_file(args.base_file).sites
     sites = {site.name: site for site in sites_subset}
     engines = db.engines
@@ -178,7 +178,7 @@ if __name__ == '__main__':
             random.shuffle(urls)
         urls = urls[:args.top]
 
-    raw_maigret_data = json.dumps({site.name: site.json for site in sites_subset})
+    raw_socialspot_data = json.dumps({site.name: site.json for site in sites_subset})
 
     new_sites = []
     for site in alive_progress.alive_it(urls):
@@ -191,8 +191,8 @@ if __name__ == '__main__':
             logger.debug('Site %s skipped due to filtering by "%s"', domain_raw, args.filter)
             continue
 
-        if domain_raw in raw_maigret_data:
-            logger.debug(f'Site {domain_raw} already exists in the Maigret database!')
+        if domain_raw in raw_socialspot_data:
+            logger.debug(f'Site {domain_raw} already exists in the socialspot database!')
             continue
 
         if '"' in domain_raw:
@@ -234,7 +234,7 @@ if __name__ == '__main__':
             detected_engines = [args.add_engine]
 
         def create_site_from_engine(sitename, data, e):
-            site = MaigretSite(sitename, data)
+            site = socialspotSite(sitename, data)
             site.update_from_engine(db.engines_dict[e])
             site.engine = e
             return site
@@ -267,7 +267,7 @@ if __name__ == '__main__':
     ok_sites = []
     tasks = []
     for site in new_sites:
-        check_coro = check_and_add_maigret_site(site, sem, logger, ok_usernames, bad_usernames)
+        check_coro = check_and_add_socialspot_site(site, sem, logger, ok_usernames, bad_usernames)
         future = asyncio.ensure_future(check_coro)
         tasks.append(future)
 

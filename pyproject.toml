@@ -3,15 +3,10 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "maigret"
+name = "socialspot"
 version = "0.5.0a1"
 description = "🕵️‍♂️ Collect a dossier on a person by username from thousands of sites."
-authors = ["Soxoj <soxoj@protonmail.com>"]
-readme = "README.md"
-license = "MIT License"
-homepage = "https://pypi.org/project/maigret"
-documentation = "https://maigret.readthedocs.io"
-repository = "https://github.com/soxoj/maigret"
+
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Programming Language :: Python :: 3",
@@ -22,7 +17,6 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-"Bug Tracker" = "https://github.com/soxoj/maigret/issues"
 
 [tool.poetry.dependencies]
 # poetry install
@@ -91,6 +85,6 @@ coverage = "^7.6.10"
 black = "^24.10.0"
 
 [tool.poetry.scripts]
-# Run with: poetry run maigret <username>
-maigret = "maigret.maigret:run"
+# Run with: poetry run socialspot <username>
+socialspot = "socialspot.socialspot:run"
 update_sitesmd = "utils.update_site_data:main"

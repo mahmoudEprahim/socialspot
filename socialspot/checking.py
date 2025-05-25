@@ -27,8 +27,8 @@ from . import errors
 from .activation import ParsingActivator, import_aiohttp_cookies
 from .errors import CheckError
 from .executors import AsyncioQueueGeneratorExecutor
-from .result import MaigretCheckResult, MaigretCheckStatus
-from .sites import MaigretDatabase, MaigretSite
+from .result import socialspotCheckResult, socialspotCheckStatus
+from .sites import socialspotDatabase, socialspotSite
 from .types import QueryOptions, QueryResultWrapper
 from .utils import ascii_data_display, get_random_user_agent
 
@@ -235,7 +235,7 @@ def debug_response_logging(url, html_text, status_code, check_error):
 
 
 def process_site_result(
-    response, query_notify, logger, results_info: QueryResultWrapper, site: MaigretSite
+    response, query_notify, logger, results_info: QueryResultWrapper, site: socialspotSite
 ):
     if not response:
         return results_info
@@ -318,7 +318,7 @@ def process_site_result(
                     break
 
     def build_result(status, **kwargs):
-        return MaigretCheckResult(
+        return socialspotCheckResult(
             username,
             site_name,
             url,
@@ -330,11 +330,11 @@ def process_site_result(
 
     if check_error:
         logger.warning(check_error)
-        result = MaigretCheckResult(
+        result = socialspotCheckResult(
             username,
             site_name,
             url,
-            MaigretCheckStatus.UNKNOWN,
+            socialspotCheckStatus.UNKNOWN,
             query_time=response_time,
             error=check_error,
             context=str(CheckError),
@@ -346,15 +346,15 @@ def process_site_result(
             [(absence_flag in html_text) for absence_flag in site.absence_strs]
         )
         if not is_absence_detected and is_presense_detected:
-            result = build_result(MaigretCheckStatus.CLAIMED)
+            result = build_result(socialspotCheckStatus.CLAIMED)
         else:
-            result = build_result(MaigretCheckStatus.AVAILABLE)
+            result = build_result(socialspotCheckStatus.AVAILABLE)
     elif check_type in "status_code":
         # Checks if the status code of the response is 2XX
         if 200 <= status_code < 300:
-            result = build_result(MaigretCheckStatus.CLAIMED)
+            result = build_result(socialspotCheckStatus.CLAIMED)
         else:
-            result = build_result(MaigretCheckStatus.AVAILABLE)
+            result = build_result(socialspotCheckStatus.AVAILABLE)
     elif check_type == "response_url":
         # For this detection method, we have turned off the redirect.
         # So, there is no need to check the response URL: it will always
@@ -362,9 +362,9 @@ def process_site_result(
         # code indicates that the request was successful (i.e. no 404, or
         # forward to some odd redirect).
         if 200 <= status_code < 300 and is_presense_detected:
-            result = build_result(MaigretCheckStatus.CLAIMED)
+            result = build_result(socialspotCheckStatus.CLAIMED)
         else:
-            result = build_result(MaigretCheckStatus.AVAILABLE)
+            result = build_result(socialspotCheckStatus.AVAILABLE)
     else:
         # It should be impossible to ever get here...
         raise ValueError(
@@ -373,7 +373,7 @@ def process_site_result(
 
     extracted_ids_data = {}
 
-    if is_parsing_enabled and result.status == MaigretCheckStatus.CLAIMED:
+    if is_parsing_enabled and result.status == socialspotCheckStatus.CLAIMED:
         extracted_ids_data = extract_ids_data(html_text, logger, site)
         if extracted_ids_data:
             new_usernames = parse_usernames(extracted_ids_data, logger)
@@ -394,7 +394,7 @@ def process_site_result(
 
 
 def make_site_result(
-    site: MaigretSite, username: str, options: QueryOptions, logger, *args, **kwargs
+    site: socialspotSite, username: str, options: QueryOptions, logger, *args, **kwargs
 ) -> QueryResultWrapper:
     results_site: QueryResultWrapper = {}
 
@@ -438,29 +438,29 @@ def make_site_result(
     # site check is disabled
     if site.disabled and not options['forced']:
         logger.debug(f"Site {site.name} is disabled, skipping...")
-        results_site["status"] = MaigretCheckResult(
+        results_site["status"] = socialspotCheckResult(
             username,
             site.name,
             url,
-            MaigretCheckStatus.ILLEGAL,
+            socialspotCheckStatus.ILLEGAL,
             error=CheckError("Check is disabled"),
         )
     # current username type could not be applied
     elif site.type != options["id_type"]:
-        results_site["status"] = MaigretCheckResult(
+        results_site["status"] = socialspotCheckResult(
             username,
             site.name,
             url,
-            MaigretCheckStatus.ILLEGAL,
+            socialspotCheckStatus.ILLEGAL,
             error=CheckError('Unsupported identifier type', f'Want "{site.type}"'),
         )
     # username is not allowed.
     elif site.regex_check and re.search(site.regex_check, username) is None:
-        results_site["status"] = MaigretCheckResult(
+        results_site["status"] = socialspotCheckResult(
             username,
             site.name,
             url,
-            MaigretCheckStatus.ILLEGAL,
+            socialspotCheckStatus.ILLEGAL,
             error=CheckError(
                 'Unsupported username format', f'Want "{site.regex_check}"'
             ),
@@ -571,9 +571,9 @@ def get_failed_sites(results: Dict[str, QueryResultWrapper]) -> List[str]:
     return sites
 
 
-async def maigret(
+async def socialspot(
     username: str,
-    site_dict: Dict[str, MaigretSite],
+    site_dict: Dict[str, socialspotSite],
     logger,
     query_notify=None,
     proxy=None,
@@ -598,7 +598,7 @@ async def maigret(
 
     Keyword Arguments:
     username               -- Username string will be used for search.
-    site_dict              -- Dictionary containing sites data in MaigretSite objects.
+    site_dict              -- Dictionary containing sites data in socialspotSite objects.
     query_notify           -- Object with base type of QueryNotify().
                               This will be used to notify the caller about
                               query results.
@@ -608,7 +608,7 @@ async def maigret(
     is_parsing_enabled     -- Extract additional info from account pages.
     id_type                -- Type of username to search.
                               Default is 'username', see all supported here:
-                              https://maigret.readthedocs.io/en/latest/supported-identifier-types.html
+                              https://socialspot.readthedocs.io/en/latest/supported-identifier-types.html
     max_connections        -- Maximum number of concurrent connections allowed.
                               Default is 100.
     no_progressbar         -- Displaying of ASCII progressbar during scanner.
@@ -702,11 +702,11 @@ async def maigret(
                 continue
             default_result: QueryResultWrapper = {
                 'site': site,
-                'status': MaigretCheckResult(
+                'status': socialspotCheckResult(
                     username,
                     sitename,
                     '',
-                    MaigretCheckStatus.UNKNOWN,
+                    socialspotCheckStatus.UNKNOWN,
                     error=CheckError('Request failed'),
                 ),
             }
@@ -778,10 +778,10 @@ def timeout_check(value):
 
 
 async def site_self_check(
-    site: MaigretSite,
+    site: socialspotSite,
     logger: logging.Logger,
     semaphore,
-    db: MaigretDatabase,
+    db: socialspotDatabase,
     silent=False,
     proxy=None,
     tor_proxy=None,
@@ -794,15 +794,15 @@ async def site_self_check(
     }
 
     check_data = [
-        (site.username_claimed, MaigretCheckStatus.CLAIMED),
-        (site.username_unclaimed, MaigretCheckStatus.AVAILABLE),
+        (site.username_claimed, socialspotCheckStatus.CLAIMED),
+        (site.username_unclaimed, socialspotCheckStatus.AVAILABLE),
     ]
 
     logger.info(f"Checking {site.name}...")
 
     for username, status in check_data:
         async with semaphore:
-            results_dict = await maigret(
+            results_dict = await socialspot(
                 username=username,
                 site_dict={site.name: site},
                 logger=logger,
@@ -834,7 +834,7 @@ async def site_self_check(
         site_status = result.status
 
         if site_status != status:
-            if site_status == MaigretCheckStatus.UNKNOWN:
+            if site_status == socialspotCheckStatus.UNKNOWN:
                 msgs = site.absence_strs
                 etype = site.check_type
                 logger.warning(
@@ -846,9 +846,9 @@ async def site_self_check(
                 if skip_errors:
                     pass
                 # don't disable in case of available username
-                elif status == MaigretCheckStatus.CLAIMED:
+                elif status == socialspotCheckStatus.CLAIMED:
                     changes["disabled"] = True
-            elif status == MaigretCheckStatus.CLAIMED:
+            elif status == socialspotCheckStatus.CLAIMED:
                 logger.warning(
                     f"Not found `{username}` in {site.name}, must be claimed"
                 )
@@ -878,7 +878,7 @@ async def site_self_check(
 
 
 async def self_check(
-    db: MaigretDatabase,
+    db: socialspotDatabase,
     site_data: dict,
     logger: logging.Logger,
     silent=False,

@@ -1,5 +1,5 @@
 """
-Maigret main module
+socialspot main module
 """
 
 import ast
@@ -21,7 +21,7 @@ from .checking import (
     SUPPORTED_IDS,
     self_check,
     BAD_CHARS,
-    maigret,
+    socialspot,
 )
 from . import errors
 from .notify import QueryNotifyPrint
@@ -38,7 +38,7 @@ from .report import (
     sort_report_by_data_points,
     save_graph_report,
 )
-from .sites import MaigretDatabase
+from .sites import socialspotDatabase
 from .submit import Submitter
 from .types import QueryResultWrapper
 from .utils import get_dict_ascii_tree
@@ -86,7 +86,7 @@ def extract_ids_from_page(url, logger, timeout=5) -> dict:
     return results
 
 
-def extract_ids_from_results(results: QueryResultWrapper, db: MaigretDatabase) -> dict:
+def extract_ids_from_results(results: QueryResultWrapper, db: socialspotDatabase) -> dict:
     ids_results = {}
     for website_name in results:
         dictionary = results[website_name]
@@ -122,8 +122,8 @@ def setup_arguments_parser(settings: Settings):
 
     parser = ArgumentParser(
         formatter_class=RawDescriptionHelpFormatter,
-        description=f"Maigret v{__version__}\n"
-        "Documentation: https://maigret.readthedocs.io/\n"
+        description=f"socialspot v{__version__}\n"
+        "Documentation: https://socialspot.readthedocs.io/\n"
         "All settings are also configurable through files, see docs.",
     )
     parser.add_argument(
@@ -199,7 +199,7 @@ def setup_arguments_parser(settings: Settings):
         metavar="DB_FILE",
         dest="db_file",
         default=settings.sites_db_path,
-        help="Load Maigret database from a JSON file or HTTP web resource.",
+        help="Load socialspot database from a JSON file or HTTP web resource.",
     )
     parser.add_argument(
         "--cookies-jar-file",
@@ -470,7 +470,7 @@ async def main():
         datefmt='%H:%M:%S',
         level=log_level,
     )
-    logger = logging.getLogger('maigret')
+    logger = logging.getLogger('socialspot')
     logger.setLevel(log_level)
 
     # Load settings
@@ -544,7 +544,7 @@ async def main():
     )
 
     # Create object with all information about sites we are aware of.
-    db = MaigretDatabase().load_from_path(db_file)
+    db = socialspotDatabase().load_from_path(db_file)
     get_top_sites_for_id = lambda x: db.ranked_sites_dict(
         top=args.top_sites,
         tags=args.tags,
@@ -571,7 +571,7 @@ async def main():
             return
 
         query_notify.success(
-            f'Maigret sites database self-check started for {len(site_data)} sites...'
+            f'socialspot sites database self-check started for {len(site_data)} sites...'
         )
         is_need_update = await self_check(
             db,
@@ -625,7 +625,7 @@ async def main():
         sys.exit(2)
 
     query_notify.warning(
-        f'Starting a search on top {len(site_data)} sites from the Maigret database...'
+        f'Starting a search on top {len(site_data)} sites from the socialspot database...'
     )
     if not args.all_sites:
         query_notify.warning(
@@ -663,7 +663,7 @@ async def main():
 
         sites_to_check = get_top_sites_for_id(id_type)
 
-        results = await maigret(
+        results = await socialspot(
             username=username,
             site_dict=dict(sites_to_check),
             query_notify=query_notify,
@@ -776,7 +776,7 @@ def run():
             loop = asyncio.get_event_loop()
             loop.run_until_complete(main())
     except KeyboardInterrupt:
-        print('Maigret is interrupted.')
+        print('socialspot is interrupted.')
         sys.exit(1)
 
 

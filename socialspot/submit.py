@@ -11,9 +11,9 @@ import cloudscraper
 from colorama import Fore, Style
 
 from .activation import import_aiohttp_cookies
-from .result import MaigretCheckResult
+from .result import socialspotCheckResult
 from .settings import Settings
-from .sites import MaigretDatabase, MaigretEngine, MaigretSite
+from .sites import socialspotDatabase, socialspotEngine, socialspotSite
 from .utils import get_random_user_agent
 from .checking import site_self_check
 from .utils import get_match_ratio, generate_random_username
@@ -52,7 +52,7 @@ class Submitter:
     TOP_FEATURES = 5
     URL_RE = re.compile(r"https?://(www\.)?")
 
-    def __init__(self, db: MaigretDatabase, settings: Settings, logger, args):
+    def __init__(self, db: socialspotDatabase, settings: Settings, logger, args):
         self.settings = settings
         self.args = args
         self.db = db
@@ -113,7 +113,7 @@ class Submitter:
         )
         return changes
 
-    def generate_additional_fields_dialog(self, engine: MaigretEngine, dialog):
+    def generate_additional_fields_dialog(self, engine: socialspotEngine, dialog):
         fields = {}
         if 'urlSubpath' in engine.site.get('url', ''):
             msg = (
@@ -127,7 +127,7 @@ class Submitter:
 
     async def detect_known_engine(
         self, url_exists, url_mainpage, session, follow_redirects, headers
-    ) -> [List[MaigretSite], str]:
+    ) -> [List[socialspotSite], str]:
 
         session = session or self.session
         resp_text, _ = await self.get_html_response_to_compare(
@@ -167,13 +167,13 @@ class Submitter:
                         }
                         self.logger.info(site_data)
 
-                        maigret_site = MaigretSite(
+                        socialspot_site = socialspotSite(
                             url_mainpage.split("/")[-1], site_data
                         )
-                        maigret_site.update_from_engine(
+                        socialspot_site.update_from_engine(
                             self.db.engines_dict[engine_name]
                         )
-                        sites.append(maigret_site)
+                        sites.append(socialspot_site)
 
                     return sites, resp_text
 
@@ -394,9 +394,9 @@ class Submitter:
         """
         An implementation of the submit mode:
         - User provides a URL of a existing social media account
-        - Maigret tries to detect the site engine and understand how to check
+        - socialspot tries to detect the site engine and understand how to check
           for account presence with HTTP responses analysis
-        - If detection succeeds, Maigret generates a new site entry/replace old one in the database
+        - If detection succeeds, socialspot generates a new site entry/replace old one in the database
         """
         old_site = None
         additional_options_enabled = self.logger.level in (
@@ -416,7 +416,7 @@ class Submitter:
         if matched_sites:
             # TODO: update the existing site
             print(
-                f"{Fore.YELLOW}[!] Sites with domain \"{domain_raw}\" already exists in the Maigret database!{Style.RESET_ALL}"
+                f"{Fore.YELLOW}[!] Sites with domain \"{domain_raw}\" already exists in the socialspot database!{Style.RESET_ALL}"
             )
 
             status = lambda s: "(disabled)" if s.disabled else ""
@@ -540,7 +540,7 @@ class Submitter:
                 if custom_headers != self.HEADERS:
                     site_data['headers'] = custom_headers
 
-                site = MaigretSite(url_mainpage.split("/")[-1], site_data)
+                site = socialspotSite(url_mainpage.split("/")[-1], site_data)
                 sites.append(site)
 
             else:
@@ -575,7 +575,7 @@ class Submitter:
         else:
             if (
                 input(
-                    f"{Fore.GREEN}[?] Site {chosen_site.name} successfully checked. Do you want to save it in the Maigret DB? [Yn] {Style.RESET_ALL}"
+                    f"{Fore.GREEN}[?] Site {chosen_site.name} successfully checked. Do you want to save it in the socialspot DB? [Yn] {Style.RESET_ALL}"
                 )
                 .lower()
                 .strip("y")
@@ -657,7 +657,7 @@ class Submitter:
         # save the db in file
         if self.args.db_file != self.settings.sites_db_path:
             print(
-                f"{Fore.GREEN}[+] Maigret DB is saved to {self.args.db}.{Style.RESET_ALL}"
+                f"{Fore.GREEN}[+] socialspot DB is saved to {self.args.db}.{Style.RESET_ALL}"
             )
             self.db.save_to_file(self.args.db)
 
