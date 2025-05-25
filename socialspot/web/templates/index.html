@@ -2,254 +2,435 @@
 
 {% block content %}
 <style>
-    .tag-cloud {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        padding: 15px;
-        border-radius: 8px;
-        background: rgba(0, 0, 0, 0.05);
-        margin-bottom: 20px;
+    /* ------------------------------------------- */
+    /* أنماط عامة للحاوية في Index Page */
+    /* ------------------------------------------- */
+    .index-page-container {
+        /* هذا الكلاس سيغطي محتوى الصفحة بالكامل */
+        margin-top: -20px; /* لتقليل المسافة العلوية من navbar إذا أردت */
+        padding-top: 0;
+        padding-bottom: 0;
+        direction: rtl; /* اتجاه النص الأساسي للصفحة */
+        text-align: right; /* محاذاة النص الافتراضية */
     }
 
-    .tag {
-        display: inline-block;
-        padding: 5px 10px;
-        border-radius: 15px;
-        background-color: #dc3545;
-        color: white;
-        cursor: pointer;
-        font-size: 14px;
-        transition: all 0.3s ease;
-        user-select: none;
-    }
-
-    .tag.selected {
-        background-color: #28a745;
-    }
-
-    .tag:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    .hidden-select {
-        display: none !important;
-    }
-
-    .site-input-container {
-        position: relative;
-    }
-
-    .site-input {
-        width: 100%;
-    }
-
-    .selected-sites {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        padding: 10px 0;
-    }
-
-    .selected-site {
-        background-color: #214e7b;
-        padding: 2px 8px;
+    /* ------------------------------------------- */
+    /* Hero Section - القسم الرئيسي */
+    /* ------------------------------------------- */
+    .hero-section {
+        background: linear-gradient(to right, rgba(42, 61, 84, 0.9), rgba(52, 73, 94, 0.8)), url("{{ url_for('static', filename='images/hero-background.jpg') }}") no-repeat center center/cover;
+        color: #ecf0f1;
+        padding: 100px 20px;
         border-radius: 12px;
-        font-size: 14px;
-        display: inline-flex;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        margin-bottom: 60px; /* مسافة قبل القسم التالي */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
-        gap: 5px;
+        min-height: 500px; /* الحد الأدنى للارتفاع */
     }
 
-    .remove-site {
-        cursor: pointer;
-        color: #dc3545;
+    .hero-section h1 {
+        color: #f9cf00;
+        font-size: 4.5rem; /* أكبر حجماً */
+        font-weight: 800;
+        margin-bottom: 30px;
+        line-height: 1.2;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* ظل للنص */
+        animation: fadeInDown 1s ease-out; /* انيميشن للعنوان */
+    }
+
+    .hero-section p {
+        font-size: 1.6rem; /* أكبر حجماً */
+        max-width: 900px;
+        margin: 0 auto 50px auto;
+        line-height: 1.7;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        animation: fadeInUp 1.2s ease-out; /* انيميشن للفقرة */
+    }
+
+    .hero-button {
+        background-color: #f9cf00;
+        color: #2c3e50;
+        padding: 20px 50px;
+        font-size: 1.8rem; /* أكبر حجماً */
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        animation: pulse 1.5s infinite alternate; /* انيميشن نبض للزر */
+    }
+
+    .hero-button:hover {
+        background-color: #e6b800;
+        transform: translateY(-8px) scale(1.02); /* رفع وتكبير بسيط */
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        color: #2c3e50;
+    }
+
+    /* ------------------------------------------- */
+    /* Features Section - قسم الميزات */
+    /* ------------------------------------------- */
+    .features-section {
+        margin-top: 60px;
+        padding: 60px 20px;
+        background-color: #2a3d54;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .features-section h3 {
+        color: #f9cf00;
+        font-size: 3rem;
+        margin-bottom: 50px;
+        font-weight: 700;
+    }
+
+    .feature-item {
+        margin-bottom: 40px;
+        padding: 25px;
+        border-radius: 10px;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .feature-item:hover {
+        transform: translateY(-10px);
+        background-color: rgba(0, 0, 0, 0.1); /* خلفية خفيفة عند التحويم */
+    }
+
+    .feature-item .feature-icon {
+        font-size: 4.5rem; /* حجم أكبر */
+        color: #3498db;
+        margin-bottom: 20px;
+        transition: transform 0.5s ease;
+    }
+
+    .feature-item:hover .feature-icon {
+        transform: rotateY(360deg); /* دوران كامل */
+    }
+
+    .feature-item h4 {
+        color: #f9cf00;
+        font-size: 2rem;
+        margin-bottom: 15px;
         font-weight: bold;
     }
 
-    .section-header {
-        cursor: pointer;
-        padding: 1rem;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 4px;
-        margin-bottom: 0.5rem;
+    .feature-item p {
+        color: #bdc3c7;
+        font-size: 1.2rem;
+        text-align: center;
+        line-height: 1.6;
+    }
+
+    /* ------------------------------------------- */
+    /* How It Works Section - قسم كيف تعمل */
+    /* ------------------------------------------- */
+    .how-it-works-section {
+        background-color: #34495e;
+        color: #ecf0f1;
+        padding: 60px 20px;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+        margin-bottom: 60px;
+        text-align: center;
+    }
+
+    .how-it-works-section h3 {
+        color: #f9cf00;
+        font-size: 3rem;
+        margin-bottom: 50px;
+        font-weight: 700;
+    }
+
+    .step-item {
+        margin-bottom: 40px;
+    }
+
+    .step-item img {
+        width: 100%;
+        max-width: 300px; /* حجم معقول للصور */
+        height: auto;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+    }
+
+    .step-item img:hover {
+        transform: scale(1.05); /* تكبير عند التحويم */
+    }
+
+    .step-item h4 {
+        color: #3498db; /* لون أزرق للعنوان */
+        font-size: 2rem;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+
+    .step-item p {
+        color: #bdc3c7;
+        font-size: 1.2rem;
+        line-height: 1.6;
+    }
+
+    /* ------------------------------------------- */
+    /* Testimonials Section - قسم الشهادات */
+    /* ------------------------------------------- */
+    .testimonials-section {
+        background-color: #2a3d54;
+        color: #ecf0f1;
+        padding: 60px 20px;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+        margin-bottom: 60px;
+        text-align: center;
+    }
+
+    .testimonials-section h3 {
+        color: #f9cf00;
+        font-size: 3rem;
+        margin-bottom: 50px;
+        font-weight: 700;
+    }
+
+    .testimonial-card {
+        background-color: #3e5b7b; /* خلفية أفتح قليلاً */
+        padding: 30px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
         align-items: center;
+        min-height: 250px; /* لتوحيد ارتفاع البطاقات */
     }
 
-    .section-content {
-        padding: 1rem;
-        display: none;
+    .testimonial-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     }
 
-    .section-content.show {
-        display: block;
+    .testimonial-card p {
+        font-style: italic;
+        font-size: 1.15rem;
+        margin-bottom: 20px;
+        color: #ddeffc; /* لون نص الشهادة */
+        text-align: center;
+        padding: 0; /* إزالة البادينج الداخلي للفقرة هنا */
     }
 
-    .chevron::after {
-        content: '▼';
-        transition: transform 0.2s;
-    }
-
-    .chevron.collapsed::after {
-        transform: rotate(-90deg);
-    }
-
-    .main-search-section {
-        background: rgba(255, 255, 255, 0.03);
-        padding: 2rem;
-        border-radius: 8px;
-        margin-bottom: 2rem;
-    }
-
-    .search-button {
-        width: 100%;
-        padding: 1rem;
+    .testimonial-card .author {
+        font-weight: bold;
+        color: #f9cf00;
         font-size: 1.2rem;
-        margin-top: 2rem;
     }
+
+    /* ------------------------------------------- */
+    /* Call to Action Section - قسم الدعوة للعمل */
+    /* ------------------------------------------- */
+    .cta-section {
+        background: linear-gradient(to right, #f9cf00, #e6b800);
+        color: #2c3e50;
+        padding: 80px 20px;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .cta-section h3 {
+        font-size: 3.5rem;
+        margin-bottom: 30px;
+        font-weight: 800;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .cta-section p {
+        font-size: 1.8rem;
+        max-width: 900px;
+        margin: 0 auto 40px auto;
+        line-height: 1.6;
+        color: #34495e; /* لون نص أغمق قليلاً */
+    }
+
+    .cta-button {
+        background-color: #3498db; /* لون أزرق مميز */
+        color: white;
+        padding: 22px 60px;
+        font-size: 2rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .cta-button:hover {
+        background-color: #2980b9;
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+        color: white;
+    }
+
+    /* ------------------------------------------- */
+    /* Keyframe Animations */
+    /* ------------------------------------------- */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    /* تعديل عام للحاوية الرئيسية لضمان عدم وجود تداخل أنماط */
+    body .container.mt-5 {
+        max-width: 100%; /* استخدام عرض كامل للصفحة الرئيسية */
+        padding: 0; /* إزالة البادينج الافتراضي للحاوية */
+        background-color: transparent; /* جعل الخلفية شفافة لظهور خلفيات الأقسام */
+        box-shadow: none; /* إزالة الظل الافتراضي */
+        margin: 0 auto; /* توسيط الحاوية */
+    }
+
+    /* تأكد أن المسافات الجانبية الداخلية لكل قسم يتم التحكم بها داخلياً */
+    .hero-section, .features-section, .how-it-works-section, .testimonials-section, .cta-section {
+        width: 90%; /* أو أي عرض مناسب */
+        max-width: 1200px; /* لتحديد أقصى عرض */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
 </style>
 
-<div class="form-container">
-    {% if error %}
-    <div class="alert alert-danger">{{ error }}</div>
-    {% endif %}
+<div class="container mt-5 index-page-container"> {# تم تغيير الكلاس للحاوية الرئيسية #}
+    <div class="hero-section">
+        <h1>اكتشف الوجود الرقمي لاسم المستخدم الخاص بك بثوانٍ!</h1>
+        <p>SocialSpot Search هو بوابتك الشاملة للبحث عن أسماء المستخدمين عبر **مئات المنصات والشبكات الاجتماعية**. اكتشف أين يتواجد اسم المستخدم الذي يهمك بسرعة، دقة، وأمان لا مثيل له.</p>
+        <a href="{{ url_for('search') }}" class="hero-button">ابدأ البحث الآن</a>
+    </div>
 
-    <form method="POST" action="{{ url_for('search') }}" class="mb-4">
-        <!-- Main Search Section -->
-        <div class="main-search-section">
-            <div class="mb-4">
-                <label for="usernames" class="form-label h5">Usernames to Search</label>
-                <textarea class="form-control" id="usernames" name="usernames" rows="3" required
-                    placeholder="Enter one or more usernames (separated by spaces or commas)..."></textarea>
+    <div class="features-section">
+        <h3>لماذا تختار SocialSpot؟</h3>
+        <div class="row justify-content-center">
+            <div class="col-md-4 col-sm-6 feature-item">
+                <i class="fas fa-satellite-dish feature-icon"></i> {# أيقونة تغطية واسعة #}
+                <h4>تغطية شاملة</h4>
+                <p>نبحث في قاعدة بيانات متنامية تضم مئات المنصات الاجتماعية والتكنولوجية لتوفير أوسع نطاق بحث ممكن.</p>
             </div>
+            <div class="col-md-4 col-sm-6 feature-item">
+                <i class="fas fa-hourglass-half feature-icon"></i> {# أيقونة سرعة فائقة #}
+                <h4>نتائج فورية</h4>
+                <p>مع تقنيات البحث المتوازية، ستحصل على تقارير مفصلة في غضون ثوانٍ قليلة، لا داعي للانتظار.</p>
+            </div>
+            <div class="col-md-4 col-sm-6 feature-item">
+                <i class="fas fa-lock feature-icon"></i> {# أيقونة أمان وخصوصية #}
+                <h4>خصوصية وأمان</h4>
+                <p>عمليات بحث آمنة تماماً. نستخدم فقط البيانات المتاحة للجمهور ونلتزم بأعلى معايير الخصوصية.</p>
+            </div>
+            <div class="col-md-4 col-sm-6 feature-item">
+                <i class="fas fa-chart-line feature-icon"></i> {# أيقونة تحليل وتفاصيل #}
+                <h4>تقارير مفصلة</h4>
+                <p>احصل على معلومات منظمة وسهلة القراءة لكل اسم مستخدم، بما في ذلك الروابط المباشرة للحسابات.</p>
+            </div>
+            <div class="col-md-4 col-sm-6 feature-item">
+                <i class="fas fa-cogs feature-icon"></i> {# أيقونة سهولة الاستخدام #}
+                <h4>واجهة سهلة الاستخدام</h4>
+                <p>تصميم بديهي ومباشر يضمن تجربة بحث سلسة وفعالة لكل من الخبراء والمبتدئين.</p>
+            </div>
+            <div class="col-md-4 col-sm-6 feature-item">
+                <i class="fas fa-lightbulb feature-icon"></i> {# أيقونة رؤى #}
+                <h4>رؤى قيمة</h4>
+                <p>اكتشف استخدامات أسماء المستخدمين المختلفة، وحدد البصمات الرقمية المتعددة بسهولة.</p>
+            </div>
+        </div>
+    </div>
 
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <label for="top_sites" class="form-label">Number of Sites</label>
-                    <input type="number" class="form-control" id="top_sites" name="top_sites" min="1" max="10000"
-                        placeholder="Default: 500">
+    <div class="how-it-works-section">
+        <h3>كيف يعمل SocialSpot؟</h3>
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-4 step-item">
+                <img src="{{ url_for('static', filename='images/how-it-works-1.png') }}" alt="Step 1: Enter Username">
+                <h4>1. أدخل اسم المستخدم</h4>
+                <p>ابدأ بإدخال اسم المستخدم أو أكثر في حقل البحث. يمكنك فصل الأسماء بمسافات أو فواصل.</p>
+            </div>
+            <div class="col-md-4 step-item">
+                <img  src="{{ url_for('static', filename='images/how-it-works-2.png') }}" alt="Step 2: Choose Platforms">
+                <h4>2. حدد المنصات (اختياري)</h4>
+                <p>اختر ما إذا كنت تريد البحث في جميع المنصات أو تحديد منصات معينة للتركيز عليها.</p>
+            </div>
+            <div class="col-md-4 step-item">
+                <img style="height: 450px;" src="{{ url_for('static', filename='images/how-it-works-3.png') }}" alt="Step 3: Get Results">
+                <h4>3. احصل على النتائج</h4>
+                <p>اضغط على زر البحث وشاهد SocialSpot يعرض لك الوجود الرقمي لأسماء المستخدمين في ثوانٍ.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="testimonials-section">
+        <h3>ماذا يقول المستخدمون عنا؟</h3>
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="testimonial-card">
+                    <p>"SocialSpot غير قواعد اللعبة! أداة قوية جداً وسهلة الاستخدام. وجدت ما أبحث عنه في دقائق."</p>
+                    <span class="author">- أحمد م., باحث أمني</span>
                 </div>
-                <div class="col-md-6">
-                    <label for="timeout" class="form-label">Timeout (seconds)</label>
-                    <input type="number" class="form-control" id="timeout" name="timeout" min="1"
-                        placeholder="Default: 30">
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="testimonial-card">
+                    <p>"كنت أبحث عن أداة موثوقة للتحقق من أسماء المستخدمين، وهذا الموقع فاق توقعاتي بكثير. خدمة رائعة!"</p>
+                    <span class="author">- فاطمة س., مسوقة رقمية</span>
                 </div>
-                <div class="col-12 mt-3">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="all_sites" name="all_sites"
-                            onchange="document.getElementById('top_sites').disabled = this.checked; document.getElementById('siteInput').disabled = this.checked;">
-                        <label class="form-check-label" for="all_sites">Search All Sites</label>
-                    </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="testimonial-card">
+                    <p>"السرعة والدقة مذهلتان. لا أستطيع الاستغناء عن SocialSpot الآن في عملي اليومي."</p>
+                    <span class="author">- محمد ح., مطور برمجيات</span>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Filters Section -->
-        <div class="mb-4">
-            <div class="section-header" onclick="toggleSection('filters')">
-                <h5 class="mb-0">Filters</h5>
-                <span class="chevron"></span>
-            </div>
-            <div id="filters" class="section-content">
-                <div class="mb-3 site-input-container">
-                    <label for="site" class="form-label">Specify Sites (Optional)</label>
-                    <input type="text" class="form-control site-input" id="siteInput"
-                        placeholder="Type to search for sites..." list="siteOptions">
-                    <input type="hidden" id="site" name="site">
-                    <datalist id="siteOptions">
-                        {% for site in site_options %}
-                        <option value="{{ site }}">
-                            {% endfor %}
-                    </datalist>
-                    <div class="selected-sites" id="selectedSites"></div>
-                </div>
+    <div class="cta-section">
+        <h3>هل أنت مستعد لاكتشاف بصمتك الرقمية؟</h3>
+        <p>ابدأ رحلتك في عالم البحث الشامل عن أسماء المستخدمين. الأمر بسيط، سريع، وفعال!</p>
+        <a href="{{ url_for('search') }}" class="cta-button">ابدأ البحث الآن!</a>
+    </div>
 
-
-            </div>
-        </div>
-
-
-
-        <button type="submit" class="btn search-button" style="background-color: rgb(249, 207, 0); color: black;">
-            Start Search
-        </button>
-    </form>
 </div>
-
-<script>
-    function toggleSection(sectionId) {
-        const content = document.getElementById(sectionId);
-        const header = content.previousElementSibling;
-        content.classList.toggle('show');
-        header.querySelector('.chevron').classList.toggle('collapsed');
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-
-        const siteInput = document.getElementById('siteInput');
-        const hiddenInput = document.getElementById('site');
-        const selectedSitesContainer = document.getElementById('selectedSites');
-        let selectedSites = new Set();
-
-        function updateHiddenInput() {
-            hiddenInput.value = Array.from(selectedSites).join(',');
-        }
-
-        function addSite(site) {
-            if (site && !selectedSites.has(site)) {
-                selectedSites.add(site);
-                updateHiddenInput();
-                const siteElement = document.createElement('span');
-                siteElement.className = 'selected-site';
-                siteElement.innerHTML = `${site}<span class="remove-site" data-site="${site}">&times;</span>`;
-                selectedSitesContainer.appendChild(siteElement);
-            }
-        }
-
-        function removeSite(site) {
-            selectedSites.delete(site);
-            updateHiddenInput();
-            const siteElements = selectedSitesContainer.querySelectorAll('.selected-site');
-            siteElements.forEach(el => {
-                if (el.querySelector('.remove-site').dataset.site === site) {
-                    el.remove();
-                }
-            });
-        }
-
-        siteInput.addEventListener('change', function (e) {
-            const value = this.value.trim();
-            console.log(value);
-            if (value) {
-                addSite(value);
-                this.value = '';
-            }
-        });
-
-        selectedSitesContainer.addEventListener('click', function (e) {
-            if (e.target.classList.contains('remove-site')) {
-                removeSite(e.target.dataset.site);
-            }
-        });
-
-        siteInput.addEventListener('paste', function (e) {
-            e.preventDefault();
-            const paste = (e.clipboardData || window.clipboardData).getData('text');
-            const sites = paste.split(',').map(site => site.trim()).filter(site => site);
-            sites.forEach(addSite);
-        });
-
-        const form = document.querySelector('form');
-        form.addEventListener('submit', function (e) {
-            const selectedTags = Array.from(tagCloud.querySelectorAll('.tag.selected'));
-            Array.from(hiddenSelect.options).forEach(opt => {
-                opt.selected = selectedTags.some(tag => tag.dataset.value === opt.value);
-            });
-            updateHiddenInput();
-        });
-    });
-</script>
 {% endblock %}

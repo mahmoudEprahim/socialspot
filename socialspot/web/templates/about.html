@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* ------------------------------------------- */
+    /* أنماط خاصة بصفحة About Us */
+    /* ------------------------------------------- */
+    .about-page-container { /* كلاس جديد للحاوية الرئيسية لصفحة عنا */
+        max-width: 900px;
+        margin: 60px auto;
+        padding: 40px;
+        background-color: #34495e; /* خلفية داكنة للحاوية */
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        color: #ecf0f1;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        line-height: 1.7;
+        direction: rtl; /* لجعل النص يبدأ من اليمين لصفحة عربية */
+        text-align: right; /* محاذاة النص لليمين افتراضيا */
+    }
+
+    /* تنسيق العنوان الرئيسي H2 */
+    .about-page-container h2 {
+        color: #f9cf00;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 2.5rem;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    .about-page-container h2::after {
+        content: '';
+        position: absolute;
+        left: 50%; /* يبقى في المنتصف حتى مع RTL */
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background-color: #f9cf00;
+        border-radius: 2px;
+    }
+
+    /* تنسيق الفقرات P */
+    .about-page-container p {
+        font-size: 1.15rem;
+        margin-bottom: 1.5rem;
+        text-align: justify; /* محاذاة النص على الجانبين */
+        padding: 0 15px;
+    }
+
+    /* تنسيق النص الغامق Strong */
+    .about-page-container strong {
+        color: #f9cf00;
+        font-weight: 700;
+    }
+
+    /* تأثيرات على الروابط داخل المحتوى */
+    .about-page-container a {
+        color: #3498db;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .about-page-container a:hover {
+        color: #2980b9;
+        text-decoration: underline;
+    }
+
+    /* أنماط الصورة الرئيسية */
+    .about-hero-image {
+        width: 100%;
+        max-height: 350px; /* تحديد أقصى ارتفاع */
+        object-fit: cover; /* لضمان تغطية المساحة بدون تشوه */
+        border-radius: 10px;
+        margin-bottom: 2.5rem; /* مسافة أسفل الصورة */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        opacity: 0.9; /* شفافية بسيطة */
+        transition: opacity 0.5s ease, transform 0.5s ease; /* أنيميشن عند التحويم */
+    }
+
+    .about-hero-image:hover {
+        opacity: 1; /* تصبح واضحة تماماً عند التحويم */
+        transform: scale(1.02); /* تكبير بسيط جداً عند التحويم */
+    }
+
+    /* أنماط قسم الميزات/النقاط الرئيسية */
+    .feature-section {
+        margin-top: 4rem;
+        display: flex;
+        flex-wrap: wrap; /* للسماح للعناصر بالانتقال لسطر جديد في الشاشات الصغيرة */
+        gap: 20px; /* مسافة بين العناصر */
+        justify-content: center; /* توسيط العناصر */
+    }
+
+    .feature-item {
+        flex: 1; /* لتوزيع المساحة بالتساوي */
+        min-width: 280px; /* الحد الأدنى لعرض العنصر */
+        background-color: #2a3d54;
+        border-radius: 10px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-item:hover {
+        transform: translateY(-8px); /* رفع العنصر عند التحويم */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .feature-item .feature-icon {
+        font-size: 3rem; /* حجم الأيقونة */
+        color: #f9cf00; /* لون الأيقونة */
+        margin-bottom: 1rem;
+    }
+
+    .feature-item h4 {
+        color: #f9cf00;
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .feature-item p {
+        font-size: 1em;
+        color: #bdc3c7;
+        text-align: center; /* توسيط النص في الميزات */
+        padding: 0; /* إزالة البادينج الجانبي للفقرة هنا */
+    }
+
+    /* تعديل هام: إلغاء نمط base.html للحاوية الرئيسية لصفحة about-page-container */
+    body .container.mt-5:not(.about-page-container) {
+        /* للحفاظ على الأنماط الأصلية للحاويات الأخرى في base.html */
+    }
+</style>
+
+<div class="container mt-5 about-page-container"> {# تم تغيير الكلاس إلى about-page-container #}
+    <h2 class="text-center mb-4">عنا</h2>
+
+    <img src="{{ url_for('static', filename='images/about.png') }}" alt="SocialSpot Overview" class="about-hero-image">
+
+    <p>مرحباً بك في **SocialSpot**! نحن أداة قوية ومتطورة مصممة لمساعدتك في البحث عن أسماء المستخدمين عبر مختلف المنصات والشبكات الاجتماعية. نقدم لك نظرة شاملة عن الوجود الرقمي بطريقة مسؤولة وفعالة.</p>
+    <p>مهمتنا هي توفير طريقة فعالة، سريعة، وموثوقة للعثور على وجود الأشخاص عبر الإنترنت. سواء كنت ترغب في التحقق من بصمتك الرقمية، أو إجراء بحث لأغراض أمنية، أو حتى استكشاف اهتمامات الآخرين، فإن SocialSpot يضع قوة البحث الشامل بين يديك.</p>
+
+    <div class="feature-section">
+        <div class="feature-item">
+            <i class="fas fa-shield-alt feature-icon"></i> {# أيقونة الخصوصية والأمان #}
+            <h4>الخصوصية والأمان</h4>
+            <p>نحن نؤمن بأهمية **الخصوصية والأمان عبر الإنترنت**، ولهذا السبب تم تصميم أداتنا لتعمل فقط على البيانات المتاحة للجمهور. نحن نلتزم بالمعايير الأخلاقية والقانونية لضمان أن تكون عمليات البحث مسؤولة ومفيدة.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-rocket feature-icon"></i> {# أيقونة السرعة والفعالية #}
+            <h4>السرعة والفعالية</h4>
+            <p>مع SocialSpot، يمكنك الحصول على نتائج سريعة ودقيقة. أداتنا محسّنة لتوفير تجربة بحث سلسة وفعالة، مما يوفر عليك الوقت والجهد.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-handshake feature-icon"></i> {# أيقونة الدعم والمساعدة #}
+            <h4>الدعم المستمر</h4>
+            <p>نسعى دائماً لتحسين خدمتنا وإضافة المزيد من المنصات لضمان حصولك على أشمل النتائج. فريقنا ملتزم بتوفير تجربة مستخدم سلسة وفعالة. إذا كان لديك أي أسئلة، اقتراحات، أو تحتاج إلى مساعدة، فلا تتردد في **التواصل معنا**. نحن هنا لخدمتك.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
