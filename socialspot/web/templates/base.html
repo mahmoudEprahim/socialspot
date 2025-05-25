@@ -4,35 +4,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Social Spot</title> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Base styles for the body */
         body {
+            font-family: 'Inter', sans-serif; /* Changed font to Inter */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background: linear-gradient(135deg, var(--bs-body-bg-start), var(--bs-body-bg-end)); /* Gradient background */
+            transition: background-color 0.3s ease; /* Smooth transition for theme change */
+        }
+
+        /* Variables for dark theme */
+        [data-bs-theme="dark"] {
+            --bs-body-bg-start: #212529; /* Darker start color */
+            --bs-body-bg-end: #1a1e22;   /* Even darker end color */
+            --bs-body-bg: #212529;
+            --bs-body-color: #dee2e6;
+            --bs-border-color: #495057; /* Slightly lighter border for contrast */
+            --bs-header-bg: #2c3034;    /* Header background in dark mode */
+            --bs-button-bg: #495057;    /* Button background */
+            --bs-button-color: #dee2e6; /* Button text color */
+            --bs-button-border: #6c757d;/* Button border color */
+            --bs-card-bg: #2c3034;      /* Card background */
+            --bs-card-shadow: rgba(0, 0, 0, 0.4); /* Darker shadow */
+        }
+
+        /* Variables for light theme */
+        [data-bs-theme="light"] {
+            --bs-body-bg-start: #f8f9fa; /* Lighter start color */
+            --bs-body-bg-end: #e9ecef;   /* Slightly darker end color */
+            --bs-body-bg: #f8f9fa;
+            --bs-body-color: #212529;
+            --bs-border-color: #ced4da;
+            --bs-header-bg: #ffffff;
+            --bs-button-bg: #e2e6ea;
+            --bs-button-color: #212529;
+            --bs-button-border: #adb5bd;
+            --bs-card-bg: #ffffff;
+            --bs-card-shadow: rgba(0, 0, 0, 0.1);
         }
 
         .main-container {
             flex: 1;
             padding-top: 2rem;
+            display: flex; /* Use flexbox for centering content */
+            justify-content: center; /* Center horizontally */
+            align-items: flex-start; /* Align to top vertically */
         }
 
         .form-container {
-            max-width: auto;
+            max-width: 700px; /* Increased max-width for better layout */
+            width: 100%; /* Ensure it takes full width up to max-width */
             margin: auto;
-            padding-bottom: 2rem;
-        }
-
-        [data-bs-theme="dark"] {
-            --bs-body-bg: #212529;
-            --bs-body-color: #dee2e6;
+            padding: 2.5rem; /* Increased padding */
+            background-color: var(--bs-card-bg); /* Use card background variable */
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 0.5rem 1rem var(--bs-card-shadow); /* Soft shadow */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .header {
-            padding: 1rem 0;
-            margin-bottom: 2rem;
+            padding: 1.5rem 0; /* Increased padding for header */
+            margin-bottom: 2.5rem; /* Increased margin */
             border-bottom: 1px solid var(--bs-border-color);
+            background-color: var(--bs-header-bg); /* Header background */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for header */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .header-content {
@@ -48,16 +88,53 @@
         }
 
         .logo {
-            height: 40px;
+            height: 50px; /* Slightly larger logo */
             width: auto;
+            border-radius: 0.5rem; /* Rounded logo corners */
+            object-fit: contain; /* Ensure logo fits without distortion */
+        }
+
+        .btn-outline-secondary {
+            border-color: var(--bs-button-border);
+            color: var(--bs-button-color);
+            background-color: transparent;
+            transition: all 0.3s ease;
+            border-radius: 0.5rem; /* Rounded button corners */
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: var(--bs-button-bg);
+            color: var(--bs-body-bg); /* Darker text on hover */
+            border-color: var(--bs-button-bg);
+        }
+
+        /* Adjustments for Bootstrap form elements */
+        .form-control {
+            border-radius: 0.5rem; /* Rounded form inputs */
+            padding: 0.75rem 1rem; /* Larger padding for inputs */
+            background-color: var(--bs-body-bg); /* Match body background */
+            color: var(--bs-body-color); /* Match body text color */
+            border: 1px solid var(--bs-border-color); /* Match border color */
+        }
+
+        .form-control:focus {
+            border-color: var(--bs-primary); /* Bootstrap primary color on focus */
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); /* Bootstrap focus shadow */
+        }
+
+        .form-label {
+            color: var(--bs-body-color);
+            font-weight: 500;
         }
 
         .footer {
             margin-top: auto;
-            padding: 1rem 0;
+            padding: 1.5rem 0;
             text-align: center;
             border-top: 1px solid var(--bs-border-color);
             font-size: 0.9rem;
+            background-color: var(--bs-header-bg); /* Footer background matches header */
+            transition: background-color 0.3s ease;
         }
 
         .footer a {
@@ -68,23 +145,69 @@
         .footer a:hover {
             text-decoration: underline;
         }
+    /* Add this to your existing <style> block, or ensure it's in your base.css */
+    .header {
+        padding: 0.75rem 0; /* Reduced vertical padding */
+    }
+
+    .header .logo-icon {
+        width: 116px; /* Slightly smaller icon */
+        height: 38px; /* Slightly smaller icon */
+    }
+
+    .header .h4 {
+        font-size: 1.3rem; /* Adjust font size if needed for better fit */
+    }
+
+    /* Adjust button padding if desired for smaller header, e.g.: */
+    .header .btn {
+        padding: 0.375rem 0.75rem; /* Standard smaller button padding */
+        font-size: 0.875rem; /* Smaller font size for button text */
+    }
+
+    /* Ensure header content is still nicely aligned vertically */
+    .header-content {
+        align-items: center;
+    }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            .logo-container {
+                justify-content: center;
+            }
+            .form-container {
+                padding: 1.5rem;
+                margin: 1rem; /* Add some margin on smaller screens */
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo-container">
-                    <img src="#" alt="" class="logo">
+<div class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo-container">
+                <a href="{{ url_for('index') }}" class="logo-link" aria-label="Go to Home Page">
+                    <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s-8-4-8-10V5l8-3 8 3v7c0 6-8 10-8 10z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
                     <h1 class="h4 mb-0">Social Spot</h1>
-                </div>
+                </a>
+            </div>
+            <div class="header-actions">
                 <button class="btn btn-outline-secondary" id="theme-toggle">
                     Toggle Dark/Light Mode
                 </button>
             </div>
         </div>
     </div>
+</div>
 
     <div class="main-container">
         <div class="container">
@@ -92,10 +215,16 @@
         </div>
     </div>
 
-
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Social Spot. All rights reserved.</p>
+          
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Theme toggle functionality
         document.getElementById('theme-toggle').addEventListener('click', function () {
             const html = document.documentElement;
             if (html.getAttribute('data-bs-theme') === 'dark') {
@@ -103,6 +232,24 @@
             } else {
                 html.setAttribute('data-bs-theme', 'dark');
             }
+        });
+
+        // Optional: Save theme preference to localStorage
+        // On page load, apply saved theme
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-bs-theme', savedTheme);
+            } else {
+                // Default to dark if no preference is saved
+                document.documentElement.setAttribute('data-bs-theme', 'dark');
+            }
+
+            // Update localStorage on toggle
+            document.getElementById('theme-toggle').addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+                localStorage.setItem('theme', currentTheme);
+            });
         });
     </script>
 </body>
