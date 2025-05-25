@@ -64,6 +64,52 @@
             "usernameClaimed": "john",
             "usernameUnclaimed": "noonewouldeverusethis7",
             "alexaRank": 11
+        },
+         "SoundCloud": {
+            "tags": [
+                "music"
+            ],
+            "checkType": "status_code",
+            "urlMain": "https://soundcloud.com/",
+            "url": "https://soundcloud.com/{username}",
+            "usernameClaimed": "blue",
+            "usernameUnclaimed": "noonewouldeverusethis7",
+            "alexaRank": 125
+        },
+         "GitHub": {
+            "tags": [
+                "coding"
+            ],
+            "regexCheck": "^[a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}$",
+            "urlProbe": "https://api.github.com/users/{username}",
+            "checkType": "status_code",
+            "alexaRank": 83,
+            "urlMain": "github",
+            "url": "https://github.com/{username}",
+            "usernameClaimed": "blue",
+            "usernameUnclaimed": "noonewouldeverusethis7"
+        },  "TikTok": {
+            "tags": [
+                "video"
+            ],
+            "headers": {
+                "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+            },
+            "errors": {
+                "tiktok-verify-page": "Captcha detected"
+            },
+            "checkType": "message",
+            "presenseStrs": [
+                "\"nickname\":"
+            ],
+            "absenceStrs": [
+                "serverCode\":404"
+            ],
+            "alexaRank": 98,
+            "urlMain": "tiktok",
+            "url": "https://www.tiktok.com/@{username}",
+            "usernameClaimed": "red",
+            "usernameUnclaimed": "noonewouldeverusethis1"
         }
   }
 }
