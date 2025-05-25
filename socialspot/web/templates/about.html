@@ -2,39 +2,33 @@
 
 {% block content %}
 <style>
-    /* ------------------------------------------- */
-    /* أنماط خاصة بصفحة About Us */
-    /* ------------------------------------------- */
     .about-page-container {
-        /* max-width: 1000px;  */
         margin: 60px auto;
-        padding: 50px; /* زيادة التباعد الداخلي */
-        background-color: #34495e; /* خلفية داكنة للحاوية */
-        border-radius: 15px; /* حواف أكثر دائرية */
-        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4); /* ظل أعمق */
+        padding: 50px;
+        background-color: #34495e;
+        border-radius: 15px;
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
         color: #ecf0f1;
-        font-family: 'Cairo', sans-serif; /* استخدام خط عربي مناسب مثل Cairo */
-        line-height: 1.8; /* تباعد الأسطر */
+        font-family: 'Cairo', sans-serif;
+        line-height: 1.8;
         direction: rtl;
         text-align: right;
-        opacity: 0; /* للأنيميشن */
-        transform: translateY(20px); /* للأنيميشن */
-        animation: fadeInSlideUp 0.8s ease-out forwards; /* انيميشن عند التحميل */
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInSlideUp 0.8s ease-out forwards;
     }
 
-    /* استيراد خط Google Fonts - ضع هذا في base.html إذا أردت استخدامه في كل الموقع */
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap');
     body {
         font-family: 'Cairo', sans-serif;
     }
 
-    /* تنسيق العنوان الرئيسي H2 */
     .about-page-container h2 {
         color: #f9cf00;
-        font-size: 3.2rem; /* حجم أكبر */
-        font-weight: 800; /* أكثر سمكًا */
+        font-size: 3.2rem;
+        font-weight: 800;
         text-align: center;
-        margin-bottom: 3.5rem; /* مسافة سفلية أكبر */
+        margin-bottom: 3.5rem;
         position: relative;
         padding-bottom: 15px;
     }
@@ -45,27 +39,24 @@
         left: 50%;
         bottom: 0;
         transform: translateX(-50%);
-        width: 100px; /* خط أوسع */
-        height: 5px; /* خط أسمك */
+        width: 100px;
+        height: 5px;
         background-color: #f9cf00;
         border-radius: 3px;
     }
 
-    /* تنسيق الفقرات P */
     .about-page-container p {
-        font-size: 1.25rem; /* حجم خط أكبر للفقرات */
-        margin-bottom: 2rem; /* تباعد سفلي أكبر */
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
         text-align: justify;
-        padding: 0 20px; /* بادينج أكبر من الجانبين */
+        padding: 0 20px;
     }
 
-    /* تنسيق النص الغامق Strong */
     .about-page-container strong {
         color: #f9cf00;
-        font-weight: 800; /* أكثر سمكًا */
+        font-weight: 800;
     }
 
-    /* تأثيرات على الروابط داخل المحتوى */
     .about-page-container a {
         color: #3498db;
         text-decoration: none;
@@ -77,79 +68,76 @@
         text-decoration: underline;
     }
 
-    /* أنماط الصورة الرئيسية */
     .about-hero-image {
         width: 100%;
-        max-height: 450px; /* ارتفاع أكبر */
+        max-height: 450px;
         object-fit: cover;
-        border-radius: 15px; /* حواف أكثر دائرية */
-        margin-bottom: 3.5rem; /* مسافة أسفل الصورة */
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35); /* ظل أعمق */
+        border-radius: 15px;
+        margin-bottom: 3.5rem;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
         opacity: 0.9;
         transition: opacity 0.5s ease, transform 0.5s ease;
-        display: block; /* لضمان التوسيط بشكل صحيح */
+        display: block;
         margin-left: auto;
         margin-right: auto;
     }
 
     .about-hero-image:hover {
         opacity: 1;
-        transform: scale(1.01); /* تكبير أقل لجذب الانتباه بلطف */
+        transform: scale(1.01);
     }
 
-    /* أنماط قسم الميزات/النقاط الرئيسية */
     .feature-section {
         margin-top: 5rem;
         display: flex;
         flex-wrap: wrap;
-        gap: 30px; /* مسافة أكبر بين العناصر */
+        gap: 30px;
         justify-content: center;
     }
 
     .feature-item {
         flex: 1;
-        min-width: 300px; /* زيادة الحد الأدنى للعرض */
-        max-width: 45%; /* لتوزيع العناصر على سطرين في الشاشات الأكبر */
+        min-width: 300px;
+        max-width: 45%;
         background-color: #2a3d54;
         border-radius: 12px;
-        padding: 30px; /* تباعد داخلي أكبر */
+        padding: 30px;
         text-align: center;
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
         transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     }
 
     .feature-item:hover {
-        transform: translateY(-12px); /* رفع العنصر أكثر عند التحويم */
+        transform: translateY(-12px);
         box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
-        background-color: #26384a; /* تغيير لون الخلفية قليلاً */
+        background-color: #26384a;
     }
 
     .feature-item .feature-icon {
-        font-size: 3.8rem; /* حجم أكبر للأيقونة */
-        color: #f9cf00; /* لون الأيقونة */
+        font-size: 3.8rem;
+        color: #f9cf00;
         margin-bottom: 1.2rem;
         transition: transform 0.5s ease;
     }
 
     .feature-item:hover .feature-icon {
-        transform: rotateY(360deg) scale(1.1); /* دوران وتكبير بسيط عند التحويم */
+        transform: rotateY(360deg) scale(1.1);
     }
 
     .feature-item h4 {
         color: #f9cf00;
-        font-size: 1.8rem; /* حجم أكبر للعنوان الفرعي */
+        font-size: 1.8rem;
         margin-bottom: 1rem;
         font-weight: 700;
     }
 
     .feature-item p {
-        font-size: 1.15em; /* حجم نص الفقرة */
+        font-size: 1.15em;
         color: #bdc3c7;
-        text-align: justify; /* محاذاة النص على الجانبين */
-        padding: 0; /* إزالة البادينج الجانبي للفقرة هنا */
+        text-align: justify;
+        padding: 0;
     }
 
-    /* قسم الرؤية والرسالة */
     .mission-vision-section {
         margin-top: 5rem;
         padding: 40px;
@@ -188,7 +176,6 @@
         padding: 0 20px;
     }
 
-    /* انيميشن للدخول */
     @keyframes fadeInSlideUp {
         from {
             opacity: 0;
@@ -221,12 +208,12 @@
             <p>وقتك ثمين! مع SocialSpot، ستحصل على نتائج بحث شاملة ودقيقة في غضون ثوانٍ معدودة. أداتنا محسّنة لتقديم **تجربة بحث سلسة وفعالة**، مما يوفر عليك الوقت والجهد الذي قد تستغرقه في البحث اليدوي.</p>
         </div>
         <div class="feature-item">
-            <i class="fas fa-chart-bar feature-icon"></i> {# أيقونة إحصائيات/تحليلات #}
+            <i class="fas fa-chart-bar feature-icon"></i>
             <h4>رؤى شاملة وتقارير واضحة</h4>
             <p>لا نقدم مجرد روابط، بل **رؤى شاملة**. تقاريرنا منظمة وواضحة، تعرض لك المنصات التي وُجد عليها اسم المستخدم، مع روابط مباشرة لسهولة الوصول. نحن نساعدك على فهم الصورة الكاملة للوجود الرقمي.</p>
         </div>
         <div class="feature-item">
-            <i class="fas fa-hands-helping feature-icon"></i> {# أيقونة مساعدة ودعم #}
+            <i class="fas fa-hands-helping feature-icon"></i>
             <h4>دعم مستمر وتطوير دائم</h4>
             <p>نحن نلتزم بالتحسين المستمر لخدمتنا، وإضافة المزيد من المنصات، وتقديم أفضل تجربة للمستخدم. فريقنا متاح للإجابة على استفساراتك، والاستماع إلى اقتراحاتك، وتقديم **الدعم الكامل** لضمان رضاك التام.</p>
         </div>
