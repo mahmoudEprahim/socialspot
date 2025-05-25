@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 <style>
-    /* إضافة بعض التنسيقات المخصصة */
+    /* Add some custom styling */
     body {
-        background-color: #f8f9fa; /* لون خلفية فاتح */
+        background-color: #f8f9fa; /* Light background color */
     }
     .search-progress-container {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        min-height: 80vh; /* لجعل المحتوى يتوسط الصفحة رأسيًا */
+        min-height: 80vh; /* To vertically center the content */
         text-align: center;
         padding: 20px;
     }
@@ -23,36 +23,36 @@
         width: 100%;
     }
     .search-progress-card h2 {
-        color: #007bff; /* أزرق أساسي */
+        color: #007bff; /* Primary blue */
         margin-bottom: 20px;
         font-weight: 600;
     }
     .search-progress-card p {
-        color: #6c757d; /* رمادي غامق للنص */
+        color: #6c757d; /* Dark gray for text */
         margin-bottom: 30px;
         font-size: 1.1rem;
     }
     .spinner-border {
-        width: 4rem; /* حجم أكبر للسبينر */
+        width: 4rem; /* Larger spinner size */
         height: 4rem;
-        border-width: 0.4em; /* سماكة السبينر */
-        color: #28a745 !important; /* لون أخضر جذاب */
+        border-width: 0.4em; /* Spinner thickness */
+        color: #28a745 !important; /* Attractive green color */
     }
 </style>
 
 <div class="search-progress-container">
     <div class="search-progress-card">
-        <h2>جاري البحث...</h2>
+        <h2>Searching...</h2>
         <p>
-            طلبك قيد المعالجة في الخلفية. سيتم إعادة توجيه هذه الصفحة تلقائيًا بمجرد أن تكون النتائج جاهزة.
+            Your request is being processed in the background. This page will automatically redirect once the results are ready.
         </p>
         <div class="spinner-border" role="status">
-            <span class="visually-hidden">جاري التحميل...</span>
+            <span class="visually-hidden">Loading...</span>
         </div>
     </div>
 
     <script>
-        // إعادة التحميل كل 5 ثوانٍ للتحقق من النتائج
+        // Reload every 5 seconds to check for results
         setTimeout(function() {
             window.location.reload();
         }, 5000);

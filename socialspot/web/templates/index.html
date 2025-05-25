@@ -140,7 +140,7 @@
                 <div class="col-12 mt-3">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="all_sites" name="all_sites"
-                            onchange="document.getElementById('top_sites').disabled = this.checked;">
+                            onchange="document.getElementById('top_sites').disabled = this.checked; document.getElementById('siteInput').disabled = this.checked;">
                         <label class="form-check-label" for="all_sites">Search All Sites</label>
                     </div>
                 </div>
@@ -167,11 +167,11 @@
                     <div class="selected-sites" id="selectedSites"></div>
                 </div>
 
-             
+
             </div>
         </div>
 
-       
+
 
         <button type="submit" class="btn search-button" style="background-color: rgb(249, 207, 0); color: black;">
             Start Search
@@ -188,7 +188,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-    
+
         const siteInput = document.getElementById('siteInput');
         const hiddenInput = document.getElementById('site');
         const selectedSitesContainer = document.getElementById('selectedSites');
