@@ -1,93 +1,88 @@
 {
   "sites": {
-    "فيسبوك": {
+    "Facebook": {
       "tags": ["social", "global", "ar"],
-      "checkType": "status_code",
-      "urlMain": "https://www.facebook.com/",
       "url": "https://www.facebook.com/{username}",
-      "usernameClaimed": "facebook",
-      "usernameUnclaimed": "noonewouldeverusethis789",
+      "checkType": "message",
+      "errorType": "message",
+      "errorValue": ["Page not found", "Content not found", "This page isn't available", "Sorry, this content isn't available"],
+      "regex": "^[a-zA-Z0-9.]{5,50}$",
       "alexaRank": 7
     },
-    "يوتيوب": {
+    "YouTube": {
       "tags": ["video", "social", "global", "ar"],
+      "url": "https://www.youtube.com/@{username}",
       "checkType": "status_code",
-      "urlMain": "https://www.youtube.com/",
-      "url": "https://www.youtube.com/user/{username}",
-      "usernameClaimed": "youtube",
-      "usernameUnclaimed": "noonewouldeverusethis789",
+      "errorType": "status_code",
+      "errorValue": [404],
+      "regex": "^[a-zA-Z0-9_-]{3,24}$",
       "alexaRank": 2
     },
-    "تويتر": {
+    "X": {
       "tags": ["social", "news", "global", "ar"],
-      "checkType": "status_code",
-      "urlMain": "https://x.com/",
       "url": "https://x.com/{username}",
-      "usernameClaimed": "x",
-      "usernameUnclaimed": "noonewouldeverusethis789",
+      "checkType": "status_code",
+      "errorType": "status_code",
+      "errorValue": [404],
+      "regex": "^[a-zA-Z0-9_]{1,15}$",
       "alexaRank": 4
     },
-    "انستغرام": {
+    "Instagram": {
       "tags": ["social", "photo", "global", "ar"],
-      "checkType": "status_code",
-      "urlMain": "https://www.instagram.com/",
       "url": "https://www.instagram.com/{username}",
-      "usernameClaimed": "instagram",
-      "usernameUnclaimed": "noonewouldeverusethis789",
+      "checkType": "status_code",
+      "errorType": "status_code",
+      "errorValue": [404],
+      "regex": "^[a-zA-Z0-9._]{1,30}$",
       "alexaRank": 13
     },
-    "لينكد إن": {
+    "LinkedIn": {
       "tags": ["professional", "social", "global", "ar"],
-      "checkType": "status_code",
-      "urlMain": "https://www.linkedin.com/",
       "url": "https://www.linkedin.com/in/{username}",
-      "usernameClaimed": "linkedin",
-      "usernameUnclaimed": "noonewouldeverusethis789",
+      "checkType": "status_code",
+      "errorType": "status_code",
+      "errorValue": [404],
+      "regex": "^[a-z0-9-]{3,100}$",
       "alexaRank": 23
     },
-    "موضوع": {
+    "Mawdoo3": {
       "tags": ["arabic", "info"],
+      "url": "https://mawdoo3.com/{}",
       "checkType": "status_code",
-      "urlMain": "https://mawdoo3.com/",
-      "url": "https://mawdoo3.com/",
-      "usernameClaimed": "mawdoo3",
-      "usernameUnclaimed": "غير مستخدم",
+      "errorType": "status_code",
+      "errorValue": [404],
       "alexaRank": 1500
     },
-    "ويكيبيديا العربية": {
+    "Arabic Wikipedia": {
       "tags": ["arabic", "info", "encyclopedia"],
+      "url": "https://ar.wikipedia.org/wiki/{}",
       "checkType": "status_code",
-      "urlMain": "https://ar.wikipedia.org/",
-      "url": "https://ar.wikipedia.org/",
-      "usernameClaimed": "wikipedia",
-      "usernameUnclaimed": "غير مستخدم",
+      "errorType": "status_code",
+      "errorValue": [404],
       "alexaRank": 200
     },
-    "اليوم السابع": {
+    "Youm7": {
       "tags": ["arabic", "news", "egypt"],
+      "url": "https://www.youm7.com/{}",
       "checkType": "status_code",
-      "urlMain": "https://www.youm7.com/",
-      "url": "https://www.youm7.com/",
-      "usernameClaimed": "youm7",
-      "usernameUnclaimed": "غير مستخدم",
+      "errorType": "status_code",
+      "errorValue": [404],
       "alexaRank": 800
     },
-    "الجزيرة نت": {
+    "Al Jazeera Net": {
       "tags": ["arabic", "news", "qatar"],
+      "url": "https://www.aljazeera.net/{}",
       "checkType": "status_code",
-      "urlMain": "https://www.aljazeera.net/",
-      "url": "https://www.aljazeera.net/",
-      "usernameClaimed": "aljazeera",
-      "usernameUnclaimed": "غير مستخدم",
+      "errorType": "status_code",
+      "errorValue": [404],
       "alexaRank": 500
     },
-    "محتويات": {
+    "Mqaallty": {
       "tags": ["arabic", "info"],
+      "url": "https://www.mqaallty.com/{}",
       "checkType": "status_code",
-      "urlMain": "https://www.mqaallty.com/",
-      "url": "https://www.mqaallty.com/",
-      "usernameClaimed": "mqaallty",
-      "usernameUnclaimed": "غير مستخدم",
+      "errorType": "status_code",
+      "errorValue": [404],
       "alexaRank": 1200
     }
   }
