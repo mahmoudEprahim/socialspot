@@ -28,10 +28,10 @@ job_results = {}
 # Configuration
 socialspot_DB_FILE = os.path.join('socialspot', 'resources', 'data.json') # هذا المسار سيبقى كما هو إذا كان ملف قاعدة البيانات يتبع نفس هيكل socialspot الأصلي
 COOKIES_FILE = "cookies.txt"
-UPLOAD_FOLDER = 'uploads'
+# /UPLOAD_FOLDER = 'uploads'
 REPORTS_FOLDER = os.path.abspath('/tmp/socialspot_reports') # تم تغيير اسم المجلد هنا
 
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(REPORTS_FOLDER, exist_ok=True)
 
 
