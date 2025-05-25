@@ -1,7 +1,7 @@
 {
   "sites": {
     "Facebook": {
-      "tags": ["social", "global", "ar", "top 100"],
+      "tags": ["social", "global", "ar"],
       "url": "https://www.facebook.com/{username}",
       "checkType": "message",
       "errorType": "message",
@@ -15,7 +15,7 @@
       "alexaRank": 7
     },
     "YouTube": {
-      "tags": ["video", "social", "global", "ar", "top 100"],
+      "tags": ["video", "social", "global", "ar"],
       "url": "https://www.youtube.com/@{username}/about",
       "checkType": "message",
       "errorType": "message",
@@ -28,7 +28,7 @@
     },
  
     "Instagram": {
-      "tags": ["social", "photo", "global", "ar", "top 100"],
+      "tags": ["social", "photo", "global", "ar"],
       "url": "https://www.instagram.com/{username}",
       "checkType": "status_code",
       "errorType": "status_code",
@@ -38,12 +38,12 @@
     },
     
     "Reddit": {
-      "tags": ["discussion", "news", "top 100"],
+      "tags": ["discussion", "news"],
       "checkType": "message",
       "absenceStrs": ["Sorry, nobody on Reddit goes by that name."],
       "presenseStrs": ["Post karma"],
       "alexaRank": 19,
-      "urlMain": "https://www.reddit.com/",
+      "urlMain": "Reddit",
       "url": "https://www.reddit.com/user/{username}",
       "usernameClaimed": "blue",
       "usernameUnclaimed": "noonewouldeverusethis7"
@@ -59,7 +59,7 @@
             "absenceStrs": [
                 "Sorry! We couldn't find that page"
             ],
-            "urlMain": "https://amazon.com",
+            "urlMain": "Amazon",
             "url": "https://amazon.com/author/{username}",
             "usernameClaimed": "john",
             "usernameUnclaimed": "noonewouldeverusethis7",
