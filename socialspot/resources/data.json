@@ -1,7 +1,7 @@
 {
   "sites": {
     "Facebook": {
-      "tags": ["social", "global", "ar"],
+      "tags": ["social", "global", "ar", "top 100"],
       "url": "https://www.facebook.com/{username}",
       "checkType": "message",
       "errorType": "message",
@@ -9,31 +9,26 @@
         "Page not found",
         "Content not found",
         "This page isn't available",
-        "Sorry, this content isn't available"
+        "Sorry, this content isn't available from this IP address."
       ],
       "regex": "^[a-zA-Z0-9.]{5,50}$",
       "alexaRank": 7
     },
     "YouTube": {
-      "tags": ["video", "social", "global", "ar"],
-      "url": "https://www.youtube.com/@{username}",
-      "checkType": "status_code",
-      "errorType": "status_code",
-      "errorValue": [404],
+      "tags": ["video", "social", "global", "ar", "top 100"],
+      "url": "https://www.youtube.com/@{username}/about",
+      "checkType": "message",
+      "errorType": "message",
+      "errorValue": [
+        "This channel does not exist.",
+        "Channel not found."
+      ],
       "regex": "^[a-zA-Z0-9_-]{3,24}$",
       "alexaRank": 2
     },
-    "X": {
-      "tags": ["social", "news", "global", "ar"],
-      "url": "https://x.com/{username}",
-      "checkType": "status_code",
-      "errorType": "status_code",
-      "errorValue": [404],
-      "regex": "^[a-zA-Z0-9_]{1,15}$",
-      "alexaRank": 4
-    },
+ 
     "Instagram": {
-      "tags": ["social", "photo", "global", "ar"],
+      "tags": ["social", "photo", "global", "ar", "top 100"],
       "url": "https://www.instagram.com/{username}",
       "checkType": "status_code",
       "errorType": "status_code",
@@ -41,31 +36,9 @@
       "regex": "^[a-zA-Z0-9._]{1,30}$",
       "alexaRank": 13
     },
-    "Amazon": {
-      "tags": ["us"],
-      "checkType": "message",
-      "presenseStrs": ["authorName"],
-      "absenceStrs": ["Sorry! We couldn't find that page"],
-      "urlMain": "https://amazon.com",
-      "url": "https://amazon.com/author/{username}",
-      "usernameClaimed": "john",
-      "usernameUnclaimed": "noonewouldeverusethis7",
-      "alexaRank": 11
-    },
-    "Google Maps": {
-      "tags": ["maps", "us"],
-      "type": "gaia_id",
-      "checkType": "message",
-      "presenseStrs": ["[\"Contributions by"],
-      "absenceStrs": ["My Contributions to Google Maps"],
-      "alexaRank": 1,
-      "urlMain": "https://maps.google.com/",
-      "url": "https://www.google.com/maps/contrib/{username}",
-      "usernameClaimed": "105054951427011407574",
-      "usernameUnclaimed": "noonewouldeverusethis7"
-    },
+    
     "Reddit": {
-      "tags": ["discussion", "news"],
+      "tags": ["discussion", "news", "top 100"],
       "checkType": "message",
       "absenceStrs": ["Sorry, nobody on Reddit goes by that name."],
       "presenseStrs": ["Post karma"],
@@ -75,33 +48,22 @@
       "usernameClaimed": "blue",
       "usernameUnclaimed": "noonewouldeverusethis7"
     },
-    "Twitter": {
-      "tags": ["messaging"],
-      "headers": {
-        "sec-ch-ua": "Google Chrome\";v=\"87\", \" Not;A Brand\";v=\"99\", \"Chromium\";v=\"87\"",
-        "authorization": "Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA",
-        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36",
-        "x-guest-token": "1411741418192883712"
-      },
-      "errors": {
-        "Bad guest token": "x-guest-token update required"
-      },
-      "regexCheck": "^[a-zA-Z0-9_]{1,15}$",
-      "activation": {
-        "method": "twitter",
-        "marks": ["Bad guest token."],
-        "url": "https://api.twitter.com/1.1/guest/activate.json",
-        "src": "guest_token",
-        "dst": "x-guest-token"
-      },
-      "urlProbe": "https://twitter.com/i/api/graphql/ZRnOhhXPwue_JGILb9TNug/UserByScreenName?variables=%7B%22screen_name%22%3A%22{username}%22%2C%22withHighlightedLabel%22%3Atrue%7D",
-      "checkType": "message",
-      "absenceStrs": [" not found"],
-      "alexaRank": 48,
-      "urlMain": "https://www.twitter.com/",
-      "url": "https://twitter.com/{username}",
-      "usernameClaimed": "blue",
-      "usernameUnclaimed": "noonewould123"
-    }
+     "Amazon": {
+            "tags": [
+                "eg"
+            ],
+            "checkType": "message",
+            "presenseStrs": [
+                "authorName"
+            ],
+            "absenceStrs": [
+                "Sorry! We couldn't find that page"
+            ],
+            "urlMain": "https://amazon.com",
+            "url": "https://amazon.com/author/{username}",
+            "usernameClaimed": "john",
+            "usernameUnclaimed": "noonewouldeverusethis7",
+            "alexaRank": 11
+        }
   }
 }
