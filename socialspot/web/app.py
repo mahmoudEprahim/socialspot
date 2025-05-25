@@ -227,7 +227,7 @@ def search():
 
     options = {
         'top_sites': request.form.get('top_sites') or '500',
-        'timeout': request.form.get('timeout') or '90',
+        'timeout': request.form.get('timeout') or '20',
         # 'use_cookies': 'use_cookies' in request.form,
         'all_sites': 'all_sites' in request.form,
         # 'disable_recursive_search': 'disable_recursive_search' in request.form,
@@ -330,5 +330,5 @@ if __name__ == '__main__':
     )
 logging.getLogger('maigret.search').setLevel(logging.DEBUG)
 logging.getLogger('maigret.site').setLevel(logging.DEBUG)
-debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() in ['true', '1', 't']
+debug_mode = os.getenv('FLASK_DEBUG', 'true').lower() in ['true', '1', 't']
 app.run(debug=debug_mode)

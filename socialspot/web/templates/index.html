@@ -171,33 +171,7 @@
             </div>
         </div>
 
-        <!-- Advanced Options Section -->
-        <!-- <div class="mb-4">
-            <div class="section-header" onclick="toggleSection('advanced')">
-                <h5 class="mb-0">Advanced Options</h5>
-                <span class="chevron"></span>
-            </div>
-            <div id="advanced" class="section-content">
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="permute" name="permute">
-                    <label class="form-check-label" for="permute">Enable Username Permutations</label>
-                </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="disable_recursive_search"
-                        name="disable_recursive_search">
-                    <label class="form-check-label" for="disable_recursive_search">Disable Recursive Search</label>
-                </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="disable_extracting" name="disable_extracting">
-                    <label class="form-check-label" for="disable_extracting">Disable Information Extraction</label>
-                </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="with_domains" name="with_domains">
-                    <label class="form-check-label" for="with_domains">Check Domains</label>
-                </div>
-              
-            </div>
-        </div> -->
+       
 
         <button type="submit" class="btn search-button" style="background-color: rgb(249, 207, 0); color: black;">
             Start Search
@@ -214,32 +188,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        // Tag cloud functionality
-        const tagCloud = document.getElementById('tagCloud');
-        const hiddenSelect = document.getElementById('tags');
-        const allTags = Array.from(hiddenSelect.options).map(opt => ({
-            value: opt.value,
-            label: opt.text
-        }));
-
-        allTags.forEach(tag => {
-            const tagElement = document.createElement('span');
-            tagElement.className = 'tag';
-            tagElement.textContent = tag.label;
-            tagElement.dataset.value = tag.value;
-
-            tagElement.addEventListener('click', function () {
-                const isSelected = this.classList.toggle('selected');
-                const option = Array.from(hiddenSelect.options).find(opt => opt.value === tag.value);
-                if (option) {
-                    option.selected = isSelected;
-                }
-            });
-
-            tagCloud.appendChild(tagElement);
-        });
-
-        // Site selection functionality
+    
         const siteInput = document.getElementById('siteInput');
         const hiddenInput = document.getElementById('site');
         const selectedSitesContainer = document.getElementById('selectedSites');
@@ -273,6 +222,7 @@
 
         siteInput.addEventListener('change', function (e) {
             const value = this.value.trim();
+            console.log(value);
             if (value) {
                 addSite(value);
                 this.value = '';
