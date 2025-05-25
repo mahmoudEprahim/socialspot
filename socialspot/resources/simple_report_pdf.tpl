@@ -1,9 +1,9 @@
-<html>type="text/css"
+<html>
 <head>
     <meta charset="utf-8" />
 </head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-<title>{{ username }} -- socialspot username search report</title>
+<title>{{ username }} -- socialspot   </title>
 <body>
     <div class="container">
         <div class="row-mb">
@@ -26,9 +26,7 @@
                             </p>
                             {% endfor %}
                             {% if countries_tuple_list %}
-                            <p>
-                                Geo: {% for k, v in countries_tuple_list %}{{ k }} <span class="text-muted">({{ v }})</span>{{ ", " if not loop.last }}{% endfor %}
-                            </p>
+                          
                             {% endif %}{% if interests_tuple_list %}
                             <p>
                                 Interests: {% for k, v in interests_tuple_list %}{{ k }} <span class="text-muted">({{ v }})</span>{{ ", " if not loop.last }}{% endfor %}
