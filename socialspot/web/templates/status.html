@@ -1,16 +1,61 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container mt-4 text-center">
-    <h2>Search in progress...</h2>
-    <p>Your request is being processed in the background. This page will automatically redirect once the results are ready.</p>
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-    <script>
+<style>
+    /* إضافة بعض التنسيقات المخصصة */
+    body {
+        background-color: #f8f9fa; /* لون خلفية فاتح */
+    }
+    .search-progress-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh; /* لجعل المحتوى يتوسط الصفحة رأسيًا */
+        text-align: center;
+        padding: 20px;
+    }
+    .search-progress-card {
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        max-width: 500px;
+        width: 100%;
+    }
+    .search-progress-card h2 {
+        color: #007bff; /* أزرق أساسي */
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+    .search-progress-card p {
+        color: #6c757d; /* رمادي غامق للنص */
+        margin-bottom: 30px;
+        font-size: 1.1rem;
+    }
+    .spinner-border {
+        width: 4rem; /* حجم أكبر للسبينر */
+        height: 4rem;
+        border-width: 0.4em; /* سماكة السبينر */
+        color: #28a745 !important; /* لون أخضر جذاب */
+    }
+</style>
 
-    setTimeout(function() {
-        window.location.reload();
-    }, 5000);
+<div class="search-progress-container">
+    <div class="search-progress-card">
+        <h2>جاري البحث...</h2>
+        <p>
+            طلبك قيد المعالجة في الخلفية. سيتم إعادة توجيه هذه الصفحة تلقائيًا بمجرد أن تكون النتائج جاهزة.
+        </p>
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">جاري التحميل...</span>
+        </div>
+    </div>
+
+    <script>
+        // إعادة التحميل كل 5 ثوانٍ للتحقق من النتائج
+        setTimeout(function() {
+            window.location.reload();
+        }, 5000);
     </script>
 </div>
 {% endblock %}
