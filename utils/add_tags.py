@@ -2,8 +2,8 @@
 import random
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
-from maigrets.maigret import MaigretDatabase
-from maigrets.submit import Submitter
+from socialspots.socialspot import socialspotDatabase
+from socialspots.submit import Submitter
 
 
 def update_tags(site):
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter
                             )
     parser.add_argument("--base","-b", metavar="BASE_FILE",
-                        dest="base_file", default="maigret/resources/data.json",
+                        dest="base_file", default="socialspot/resources/data.json",
                         help="JSON file with sites data to update.")
     parser.add_argument("--name", help="Name of site to check")
 
@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    db = MaigretDatabase()
+    db = socialspotDatabase()
     db.load_from_file(args.base_file).sites
 
     while True:

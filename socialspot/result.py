@@ -1,4 +1,4 @@
-"""Maigret Result Module
+"""socialspot Result Module
 
 This module defines various objects for recording the results of queries.
 """
@@ -6,7 +6,7 @@ This module defines various objects for recording the results of queries.
 from enum import Enum
 
 
-class MaigretCheckStatus(Enum):
+class socialspotCheckStatus(Enum):
     """Query Status Enumeration.
 
     Describes status of query about a given username.
@@ -29,7 +29,7 @@ class MaigretCheckStatus(Enum):
         return self.value
 
 
-class MaigretCheckResult:
+class socialspotCheckResult:
     """
     Describes result of checking a given username on a given site
     """
@@ -93,7 +93,7 @@ class MaigretCheckResult:
         }
 
     def is_found(self):
-        return self.status == MaigretCheckStatus.CLAIMED
+        return self.status == socialspotCheckStatus.CLAIMED
 
     def __repr__(self):
         return f"<{self.__str__()}>"

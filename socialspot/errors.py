@@ -1,6 +1,6 @@
 from typing import Dict, List, Any, Tuple
 
-from .result import MaigretCheckResult
+from .result import socialspotCheckResult
 from .types import QueryResultWrapper
 
 
@@ -114,7 +114,7 @@ def extract_and_group(search_res: QueryResultWrapper) -> List[Dict[str, Any]]:
     errors_counts: Dict[str, int] = {}
     for r in search_res.values():
         if r and isinstance(r, dict) and r.get('status'):
-            if not isinstance(r['status'], MaigretCheckResult):
+            if not isinstance(r['status'], socialspotCheckResult):
                 continue
 
             err = r['status'].error

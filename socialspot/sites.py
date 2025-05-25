@@ -1,5 +1,5 @@
 # ****************************** -*-
-"""Maigret Sites Information"""
+"""socialspot Sites Information"""
 import copy
 import json
 import sys
@@ -8,7 +8,7 @@ from typing import Optional, List, Dict, Any, Tuple
 from .utils import CaseConverter, URLMatcher, is_country_tag
 
 
-class MaigretEngine:
+class socialspotEngine:
     site: Dict[str, Any] = {}
 
     def __init__(self, name, data):
@@ -20,7 +20,7 @@ class MaigretEngine:
         return self.__dict__
 
 
-class MaigretSite:
+class socialspotSite:
     # Fields that should not be serialized when converting site to JSON
     NOT_SERIALIZABLE_FIELDS = [
         "name",
@@ -42,7 +42,7 @@ class MaigretSite:
     url_main = ""
     # Full URL pattern for username page, e.g. https://example.com/forum/users/{username}
     url = ""
-    # Whether site is disabled. Not used by Maigret without --use-disabled argument
+    # Whether site is disabled. Not used by socialspot without --use-disabled argument
     disabled = False
     # Whether a positive result indicates accounts with similar usernames rather than exact matches
     similar_search = False
@@ -82,7 +82,7 @@ class MaigretSite:
     # Engine-specific configuration
     engine_data: Dict[str, Any] = {}
     # Engine instance
-    engine_obj: Optional["MaigretEngine"] = None
+    engine_obj: Optional["socialspotEngine"] = None
     # Future for async requests
     request_future = None
     # Alexa traffic rank
@@ -124,7 +124,7 @@ class MaigretSite:
         )
 
     def __eq__(self, other):
-        if isinstance(other, MaigretSite):
+        if isinstance(other, socialspotSite):
             # Compare only relevant attributes, not internal state like request_future
             attrs_to_compare = [
                 'name',
@@ -234,13 +234,13 @@ class MaigretSite:
             url = "/" + "/".join(parts[1:])
         return url
 
-    def update(self, updates: "dict") -> "MaigretSite":
+    def update(self, updates: "dict") -> "socialspotSite":
         self.__dict__.update(updates)
         self.update_detectors()
 
         return self
 
-    def update_from_engine(self, engine: MaigretEngine) -> "MaigretSite":
+    def update_from_engine(self, engine: socialspotEngine) -> "socialspotSite":
         engine_data = engine.site
         for k, v in engine_data.items():
             field = CaseConverter.camel_to_snake(k)
@@ -258,7 +258,7 @@ class MaigretSite:
 
         return self
 
-    def strip_engine_data(self) -> "MaigretSite":
+    def strip_engine_data(self) -> "socialspotSite":
         if not self.engine_obj:
             return self
 
@@ -290,7 +290,7 @@ class MaigretSite:
         return self_copy
 
 
-class MaigretDatabase:
+class socialspotDatabase:
     def __init__(self):
         self._tags: list = []
         self._sites: list = []
@@ -304,7 +304,7 @@ class MaigretDatabase:
     def sites_dict(self):
         return {site.name: site for site in self._sites}
 
-    def has_site(self, site: MaigretSite):
+    def has_site(self, site: socialspotSite):
         for s in self._sites:
             if site == s:
                 return True
@@ -329,12 +329,12 @@ class MaigretDatabase:
             reverse (bool, optional): Reverse the sorting order. Defaults to False.
             top (int, optional): Maximum number of sites to return. Defaults to sys.maxsize.
             tags (list, optional): List of tags to filter sites by. Defaults to empty list.
-            names (list, optional): List of site names (or urls, see MaigretSite.__eq__) to filter by. Defaults to empty list.
+            names (list, optional): List of site names (or urls, see socialspotSite.__eq__) to filter by. Defaults to empty list.
             disabled (bool, optional): Whether to include disabled sites. Defaults to True.
             id_type (str, optional): Type of identifier to filter by. Defaults to "username".
 
         Returns:
-            dict: Dictionary of filtered and ranked sites, with site names as keys and MaigretSite objects as values
+            dict: Dictionary of filtered and ranked sites, with site names as keys and socialspotSite objects as values
         """
         normalized_names = list(map(str.lower, names))
         normalized_tags = list(map(str.lower, tags))
@@ -381,7 +381,7 @@ class MaigretDatabase:
     def engines_dict(self):
         return {engine.name: engine for engine in self._engines}
 
-    def update_site(self, site: MaigretSite) -> "MaigretDatabase":
+    def update_site(self, site: socialspotSite) -> "socialspotDatabase":
         for s in self._sites:
             if s.name == site.name:
                 s = site
@@ -390,7 +390,7 @@ class MaigretDatabase:
         self._sites.append(site)
         return self
 
-    def save_to_file(self, filename: str) -> "MaigretDatabase":
+    def save_to_file(self, filename: str) -> "socialspotDatabase":
         if '://' in filename:
             return self
 
@@ -407,7 +407,7 @@ class MaigretDatabase:
 
         return self
 
-    def load_from_json(self, json_data: dict) -> "MaigretDatabase":
+    def load_from_json(self, json_data: dict) -> "socialspotDatabase":
         # Add all of site information from the json file to internal site list.
         site_data = json_data.get("sites", {})
         engines_data = json_data.get("engines", {})
@@ -416,17 +416,17 @@ class MaigretDatabase:
         self._tags += tags
 
         for engine_name in engines_data:
-            self._engines.append(MaigretEngine(engine_name, engines_data[engine_name]))
+            self._engines.append(socialspotEngine(engine_name, engines_data[engine_name]))
 
         for site_name in site_data:
             try:
-                maigret_site = MaigretSite(site_name, site_data[site_name])
+                socialspot_site = socialspotSite(site_name, site_data[site_name])
 
                 engine = site_data[site_name].get("engine")
                 if engine:
-                    maigret_site.update_from_engine(self.engines_dict[engine])
+                    socialspot_site.update_from_engine(self.engines_dict[engine])
 
-                self._sites.append(maigret_site)
+                self._sites.append(socialspot_site)
             except KeyError as error:
                 raise ValueError(
                     f"Problem parsing json content for site {site_name}: "
@@ -435,7 +435,7 @@ class MaigretDatabase:
 
         return self
 
-    def load_from_str(self, db_str: "str") -> "MaigretDatabase":
+    def load_from_str(self, db_str: "str") -> "socialspotDatabase":
         try:
             data = json.loads(db_str)
         except Exception as error:
@@ -446,13 +446,13 @@ class MaigretDatabase:
 
         return self.load_from_json(data)
 
-    def load_from_path(self, path: str) -> "MaigretDatabase":
+    def load_from_path(self, path: str) -> "socialspotDatabase":
         if '://' in path:
             return self.load_from_http(path)
         else:
             return self.load_from_file(path)
 
-    def load_from_http(self, url: str) -> "MaigretDatabase":
+    def load_from_http(self, url: str) -> "socialspotDatabase":
         is_url_valid = url.startswith("http://") or url.startswith("https://")
 
         if not is_url_valid:
@@ -483,7 +483,7 @@ class MaigretDatabase:
 
         return self.load_from_json(data)
 
-    def load_from_file(self, filename: "str") -> "MaigretDatabase":
+    def load_from_file(self, filename: "str") -> "socialspotDatabase":
         try:
             with open(filename, "r", encoding="utf-8") as file:
                 try:

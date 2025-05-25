@@ -13,10 +13,10 @@ import os
 import asyncio
 from datetime import datetime
 from threading import Thread
-import maigret # هذا السطر سيتم تغييره
-import maigret.settings # هذا السطر سيتم تغييره
-from maigret.sites import MaigretDatabase
-from maigret.report import generate_report_context
+import socialspot # هذا السطر سيتم تغييره
+import socialspot.settings # هذا السطر سيتم تغييره
+from socialspot.sites import socialspotDatabase
+from socialspot.report import generate_report_context
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'
@@ -26,7 +26,7 @@ background_jobs = {}
 job_results = {}
 
 # Configuration
-MAIGRET_DB_FILE = os.path.join('socialspot', 'resources', 'data.json') # هذا المسار سيبقى كما هو إذا كان ملف قاعدة البيانات يتبع نفس هيكل maigret الأصلي
+socialspot_DB_FILE = os.path.join('socialspot', 'resources', 'data.json') # هذا المسار سيبقى كما هو إذا كان ملف قاعدة البيانات يتبع نفس هيكل socialspot الأصلي
 COOKIES_FILE = "cookies.txt"
 UPLOAD_FOLDER = 'uploads'
 REPORTS_FOLDER = os.path.abspath('/tmp/socialspot_reports') # تم تغيير اسم المجلد هنا
@@ -45,7 +45,7 @@ def setup_logger(log_level, name):
 async def socialspot_search(username, options): # تم تغيير اسم الدالة
     logger = setup_logger(logging.WARNING, 'socialspot') # تم تغيير اسم الـ logger
     try:
-        db = MaigretDatabase().load_from_path(MAIGRET_DB_FILE)
+        db = socialspotDatabase().load_from_path(socialspot_DB_FILE)
         
         top_sites = int(options.get('top_sites') or 500) 
         if options.get('all_sites'):
@@ -65,7 +65,7 @@ async def socialspot_search(username, options): # تم تغيير اسم الد�
         
         logger.info(f"Found {len(sites)} sites matching the tag criteria")
 
-        results = await maigret.search( # هنا، maigret.search هو الاسم الداخلي للدالة في مكتبة Maigret، لا ينبغي تغييره
+        results = await socialspot.search( # هنا، socialspot.search هو الاسم الداخلي للدالة في مكتبة socialspot، لا ينبغي تغييره
             username=username,
             site_dict=sites,
             timeout=int(options.get('timeout', 30)),
@@ -109,10 +109,10 @@ def process_search_task(usernames, options, timestamp):
         os.makedirs(session_folder, exist_ok=True)
 
         graph_path = os.path.join(session_folder, "combined_graph.html")
-        maigret.report.save_graph_report( # لا ينبغي تغيير هذا السطر لأن maigret.report جزء من المكتبة
+        socialspot.report.save_graph_report( # لا ينبغي تغيير هذا السطر لأن socialspot.report جزء من المكتبة
             graph_path,
             general_results,
-            MaigretDatabase().load_from_path(MAIGRET_DB_FILE),
+            socialspotDatabase().load_from_path(socialspot_DB_FILE),
         )
 
         individual_reports = []
@@ -126,19 +126,19 @@ def process_search_task(usernames, options, timestamp):
 
             context = generate_report_context(general_results)
 
-            maigret.report.save_csv_report(csv_path, username, results) # لا ينبغي تغيير هذا السطر
-            maigret.report.save_json_report( # لا ينبغي تغيير هذا السطر
+            socialspot.report.save_csv_report(csv_path, username, results) # لا ينبغي تغيير هذا السطر
+            socialspot.report.save_json_report( # لا ينبغي تغيير هذا السطر
                 json_path, username, results, report_type='ndjson'
             )
-            maigret.report.save_pdf_report(pdf_path, context) # لا ينبغي تغيير هذا السطر
-            maigret.report.save_html_report(html_path, context) # لا ينبغي تغيير هذا السطر
+            socialspot.report.save_pdf_report(pdf_path, context) # لا ينبغي تغيير هذا السطر
+            socialspot.report.save_html_report(html_path, context) # لا ينبغي تغيير هذا السطر
 
             claimed_profiles = []
             for site_name, site_data in results.items():
                 if (
                     site_data.get('status')
                     and site_data['status'].status
-                    == maigret.result.MaigretCheckStatus.CLAIMED # لا ينبغي تغيير هذا السطر
+                    == socialspot.result.socialspotCheckStatus.CLAIMED # لا ينبغي تغيير هذا السطر
                 ):
                     claimed_profiles.append(
                         {
@@ -190,7 +190,7 @@ def process_search_task(usernames, options, timestamp):
 @app.route('/')
 def index():
     #load site data for autocomplete
-    db = MaigretDatabase().load_from_path(MAIGRET_DB_FILE)
+    db = socialspotDatabase().load_from_path(socialspot_DB_FILE)
     site_options = []
     
     for site in db.sites:
@@ -227,7 +227,7 @@ def search():
 
     options = {
         'top_sites': request.form.get('top_sites') or '500',
-        'timeout': request.form.get('timeout') or '20',
+        'timeout': request.form.get('timeout') or '90',
         # 'use_cookies': 'use_cookies' in request.form,
         'all_sites': 'all_sites' in request.form,
         # 'disable_recursive_search': 'disable_recursive_search' in request.form,
@@ -240,7 +240,7 @@ def search():
         # 'tags': selected_tags,   # Pass selected tags as a list
         'site_list': [s.strip() for s in request.form.get('site', '').split(',') if s.strip()],
     }
-    logging.info(f"DEBUG: Final options sent to Maigret: {options}")
+    logging.info(f"DEBUG: Final options sent to socialspot: {options}")
     logging.info(f"Starting search for usernames: {usernames} with tags: {selected_tags}")
 
     # Start background job
@@ -328,7 +328,7 @@ if __name__ == '__main__':
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     )
-logging.getLogger('maigret.search').setLevel(logging.DEBUG)
-logging.getLogger('maigret.site').setLevel(logging.DEBUG)
+logging.getLogger('socialspot.search').setLevel(logging.DEBUG)
+logging.getLogger('socialspot.site').setLevel(logging.DEBUG)
 debug_mode = os.getenv('FLASK_DEBUG', 'true').lower() in ['true', '1', 't']
 app.run(debug=debug_mode)

@@ -13,8 +13,8 @@ from dateutil.parser import parse as parse_datetime_str
 from jinja2 import Template
 
 from .checking import SUPPORTED_IDS
-from .result import MaigretCheckStatus
-from .sites import MaigretDatabase
+from .result import socialspotCheckStatus
+from .sites import socialspotDatabase
 from .utils import is_country_tag, CaseConverter, enrich_link_str
 
 
@@ -78,7 +78,7 @@ def save_pdf_report(filename: str, context: dict):
     template, css = generate_report_template(is_pdf=True)
     filled_template = template.render(**context)
 
-    # moved here to speed up the launch of Maigret
+    # moved here to speed up the launch of socialspot
     from xhtml2pdf import pisa
 
     with open(filename, "w+b") as f:
@@ -90,7 +90,7 @@ def save_json_report(filename: str, username: str, results: dict, report_type: s
         generate_json_report(username, results, f, report_type=report_type)
 
 
-class MaigretGraph:
+class socialspotGraph:
     other_params = {'size': 10, 'group': 3}
     site_params = {'size': 15, 'group': 2}
     username_params = {'size': 20, 'group': 1}
@@ -118,11 +118,11 @@ class MaigretGraph:
         self.G.add_edge(node1_name, node2_name, weight=2)
 
 
-def save_graph_report(filename: str, username_results: list, db: MaigretDatabase):
+def save_graph_report(filename: str, username_results: list, db: socialspotDatabase):
     import networkx as nx
 
     G = nx.Graph()
-    graph = MaigretGraph(G)
+    graph = socialspotGraph(G)
 
     base_site_nodes = {}
     site_account_nodes = {}
@@ -138,7 +138,7 @@ def save_graph_report(filename: str, username_results: list, db: MaigretDatabase
                 continue
 
             status = dictionary.get("status")
-            if not status or status.status != MaigretCheckStatus.CLAIMED:
+            if not status or status.status != socialspotCheckStatus.CLAIMED:
                 continue
 
             # base site node 
@@ -248,9 +248,9 @@ def generate_report_template(is_pdf: bool):
     """
 
     def get_resource_content(filename):
-        return open(os.path.join(maigret_path, "resources", filename)).read()
+        return open(os.path.join(socialspot_path, "resources", filename)).read()
 
-    maigret_path = os.path.dirname(os.path.realpath(__file__))
+    socialspot_path = os.path.dirname(os.path.realpath(__file__))
 
     if is_pdf:
         template_content = get_resource_content("simple_report_pdf.tpl")
@@ -274,7 +274,7 @@ def generate_report_context(username_results: list):
 
     first_seen = None
 
-    # moved here to speed up the launch of Maigret
+    # moved here to speed up the launch of socialspot
     import pycountry
 
     for username, id_type, results in username_results:
@@ -352,7 +352,7 @@ def generate_report_context(username_results: list):
                         new_ids.append((u, utype))
                         usernames[u] = {"type": utype}
 
-            if status.status == MaigretCheckStatus.CLAIMED:
+            if status.status == socialspotCheckStatus.CLAIMED:
                 found_accounts += 1
                 dictionary["found"] = True
             else:
@@ -432,7 +432,7 @@ def generate_txt_report(username: str, results: dict, file):
             continue
         if (
             dictionary.get("status")
-            and dictionary["status"].status == MaigretCheckStatus.CLAIMED
+            and dictionary["status"].status == socialspotCheckStatus.CLAIMED
         ):
             exists_counter += 1
             file.write(dictionary["url_user"] + "\n")
@@ -449,7 +449,7 @@ def generate_json_report(username: str, results: dict, file, report_type):
         if not site_result or not site_result.get("status"):
             continue
 
-        if site_result["status"].status != MaigretCheckStatus.CLAIMED:
+        if site_result["status"].status != socialspotCheckStatus.CLAIMED:
             continue
 
         data = dict(site_result)
@@ -510,7 +510,7 @@ def design_xmind_sheet(sheet, username, results):
             continue
         result_status = dictionary.get("status")
         # TODO: fix the reason
-        if not result_status or result_status.status != MaigretCheckStatus.CLAIMED:
+        if not result_status or result_status.status != socialspotCheckStatus.CLAIMED:
             continue
 
         stripped_tags = list(map(lambda x: x.strip(), result_status.tags))
