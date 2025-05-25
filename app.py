@@ -42,7 +42,6 @@ job_results = {}
 
 # Configuration
 socialspot_DB_FILE = os.path.join('socialspot', 'resources', 'data.json')
-COOKIES_FILE = "cookies.txt"
 
 # اجعل مجلد التقارير داخل مجلد المشروع في مجلد اسمه 'reports_output'
 REPORTS_FOLDER = os.path.join(current_dir, 'reports_output')
@@ -57,7 +56,6 @@ def setup_logger(log_level, name):
     return logger
 
 
-# دالة البحث الرئيسية
 async def socialspot_search(username, options):
     logger = setup_logger(logging.WARNING, 'socialspot')
     try:
@@ -87,7 +85,6 @@ async def socialspot_search(username, options):
             timeout=int(options.get('timeout', 30)),
             logger=logger,
             id_type='username',
-            cookies=COOKIES_FILE if options.get('use_cookies') else None,
             is_parsing_enabled=(not options.get('disable_extracting', False)),
             recursive_search_enabled=(not options.get('disable_recursive_search', False)),
             check_domains=options.get('with_domains', False),
@@ -255,7 +252,6 @@ def search():
     options = {
         'top_sites': request.form.get('top_sites') or '500',
         'timeout': request.form.get('timeout') or '90',
-        # 'use_cookies': 'use_cookies' in request.form, # هذه الخيارات معطلة حاليًا
         'all_sites': 'all_sites' in request.form,
         # 'disable_recursive_search': 'disable_recursive_search' in request.form,
         # 'disable_extracting': 'disable_extracting' in request.form,
