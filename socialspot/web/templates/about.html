@@ -5,62 +5,71 @@
     /* ------------------------------------------- */
     /* أنماط خاصة بصفحة About Us */
     /* ------------------------------------------- */
-    .about-page-container { /* كلاس جديد للحاوية الرئيسية لصفحة عنا */
-        max-width: 900px;
+    .about-page-container {
+        /* max-width: 1000px;  */
         margin: 60px auto;
-        padding: 40px;
+        padding: 50px; /* زيادة التباعد الداخلي */
         background-color: #34495e; /* خلفية داكنة للحاوية */
-        border-radius: 12px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        border-radius: 15px; /* حواف أكثر دائرية */
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4); /* ظل أعمق */
         color: #ecf0f1;
-        font-family: 'Segoe UI', Arial, sans-serif;
-        line-height: 1.7;
-        direction: rtl; /* لجعل النص يبدأ من اليمين لصفحة عربية */
-        text-align: right; /* محاذاة النص لليمين افتراضيا */
+        font-family: 'Cairo', sans-serif; /* استخدام خط عربي مناسب مثل Cairo */
+        line-height: 1.8; /* تباعد الأسطر */
+        direction: rtl;
+        text-align: right;
+        opacity: 0; /* للأنيميشن */
+        transform: translateY(20px); /* للأنيميشن */
+        animation: fadeInSlideUp 0.8s ease-out forwards; /* انيميشن عند التحميل */
+    }
+
+    /* استيراد خط Google Fonts - ضع هذا في base.html إذا أردت استخدامه في كل الموقع */
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap');
+    body {
+        font-family: 'Cairo', sans-serif;
     }
 
     /* تنسيق العنوان الرئيسي H2 */
     .about-page-container h2 {
         color: #f9cf00;
-        font-size: 2.5rem;
-        font-weight: 700;
+        font-size: 3.2rem; /* حجم أكبر */
+        font-weight: 800; /* أكثر سمكًا */
         text-align: center;
-        margin-bottom: 2.5rem;
+        margin-bottom: 3.5rem; /* مسافة سفلية أكبر */
         position: relative;
-        padding-bottom: 10px;
+        padding-bottom: 15px;
     }
 
     .about-page-container h2::after {
         content: '';
         position: absolute;
-        left: 50%; /* يبقى في المنتصف حتى مع RTL */
+        left: 50%;
         bottom: 0;
         transform: translateX(-50%);
-        width: 80px;
-        height: 4px;
+        width: 100px; /* خط أوسع */
+        height: 5px; /* خط أسمك */
         background-color: #f9cf00;
-        border-radius: 2px;
+        border-radius: 3px;
     }
 
     /* تنسيق الفقرات P */
     .about-page-container p {
-        font-size: 1.15rem;
-        margin-bottom: 1.5rem;
-        text-align: justify; /* محاذاة النص على الجانبين */
-        padding: 0 15px;
+        font-size: 1.25rem; /* حجم خط أكبر للفقرات */
+        margin-bottom: 2rem; /* تباعد سفلي أكبر */
+        text-align: justify;
+        padding: 0 20px; /* بادينج أكبر من الجانبين */
     }
 
     /* تنسيق النص الغامق Strong */
     .about-page-container strong {
         color: #f9cf00;
-        font-weight: 700;
+        font-weight: 800; /* أكثر سمكًا */
     }
 
     /* تأثيرات على الروابط داخل المحتوى */
     .about-page-container a {
         color: #3498db;
         text-decoration: none;
-        transition: color 0.3s ease;
+        transition: color 0.3s ease, text-decoration 0.3s ease;
     }
 
     .about-page-container a:hover {
@@ -71,94 +80,163 @@
     /* أنماط الصورة الرئيسية */
     .about-hero-image {
         width: 100%;
-        max-height: 350px; /* تحديد أقصى ارتفاع */
-        object-fit: cover; /* لضمان تغطية المساحة بدون تشوه */
-        border-radius: 10px;
-        margin-bottom: 2.5rem; /* مسافة أسفل الصورة */
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-        opacity: 0.9; /* شفافية بسيطة */
-        transition: opacity 0.5s ease, transform 0.5s ease; /* أنيميشن عند التحويم */
+        max-height: 450px; /* ارتفاع أكبر */
+        object-fit: cover;
+        border-radius: 15px; /* حواف أكثر دائرية */
+        margin-bottom: 3.5rem; /* مسافة أسفل الصورة */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35); /* ظل أعمق */
+        opacity: 0.9;
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        display: block; /* لضمان التوسيط بشكل صحيح */
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .about-hero-image:hover {
-        opacity: 1; /* تصبح واضحة تماماً عند التحويم */
-        transform: scale(1.02); /* تكبير بسيط جداً عند التحويم */
+        opacity: 1;
+        transform: scale(1.01); /* تكبير أقل لجذب الانتباه بلطف */
     }
 
     /* أنماط قسم الميزات/النقاط الرئيسية */
     .feature-section {
-        margin-top: 4rem;
+        margin-top: 5rem;
         display: flex;
-        flex-wrap: wrap; /* للسماح للعناصر بالانتقال لسطر جديد في الشاشات الصغيرة */
-        gap: 20px; /* مسافة بين العناصر */
-        justify-content: center; /* توسيط العناصر */
+        flex-wrap: wrap;
+        gap: 30px; /* مسافة أكبر بين العناصر */
+        justify-content: center;
     }
 
     .feature-item {
-        flex: 1; /* لتوزيع المساحة بالتساوي */
-        min-width: 280px; /* الحد الأدنى لعرض العنصر */
+        flex: 1;
+        min-width: 300px; /* زيادة الحد الأدنى للعرض */
+        max-width: 45%; /* لتوزيع العناصر على سطرين في الشاشات الأكبر */
         background-color: #2a3d54;
-        border-radius: 10px;
-        padding: 25px;
+        border-radius: 12px;
+        padding: 30px; /* تباعد داخلي أكبر */
         text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     }
 
     .feature-item:hover {
-        transform: translateY(-8px); /* رفع العنصر عند التحويم */
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        transform: translateY(-12px); /* رفع العنصر أكثر عند التحويم */
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+        background-color: #26384a; /* تغيير لون الخلفية قليلاً */
     }
 
     .feature-item .feature-icon {
-        font-size: 3rem; /* حجم الأيقونة */
+        font-size: 3.8rem; /* حجم أكبر للأيقونة */
         color: #f9cf00; /* لون الأيقونة */
-        margin-bottom: 1rem;
+        margin-bottom: 1.2rem;
+        transition: transform 0.5s ease;
+    }
+
+    .feature-item:hover .feature-icon {
+        transform: rotateY(360deg) scale(1.1); /* دوران وتكبير بسيط عند التحويم */
     }
 
     .feature-item h4 {
         color: #f9cf00;
-        font-size: 1.5rem;
-        margin-bottom: 0.8rem;
+        font-size: 1.8rem; /* حجم أكبر للعنوان الفرعي */
+        margin-bottom: 1rem;
+        font-weight: 700;
     }
 
     .feature-item p {
-        font-size: 1em;
+        font-size: 1.15em; /* حجم نص الفقرة */
         color: #bdc3c7;
-        text-align: center; /* توسيط النص في الميزات */
+        text-align: justify; /* محاذاة النص على الجانبين */
         padding: 0; /* إزالة البادينج الجانبي للفقرة هنا */
     }
 
-    /* تعديل هام: إلغاء نمط base.html للحاوية الرئيسية لصفحة about-page-container */
-    body .container.mt-5:not(.about-page-container) {
-        /* للحفاظ على الأنماط الأصلية للحاويات الأخرى في base.html */
+    /* قسم الرؤية والرسالة */
+    .mission-vision-section {
+        margin-top: 5rem;
+        padding: 40px;
+        background-color: #2a3d54;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+        text-align: center;
+    }
+
+    .mission-vision-section h3 {
+        color: #3498db;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        position: relative;
+        padding-bottom: 10px;
+    }
+    .mission-vision-section h3::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background-color: #3498db;
+        border-radius: 2px;
+    }
+
+    .mission-vision-section p {
+        font-size: 1.2rem;
+        color: #ddeffc;
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+        text-align: justify;
+        padding: 0 20px;
+    }
+
+    /* انيميشن للدخول */
+    @keyframes fadeInSlideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 </style>
 
-<div class="container mt-5 about-page-container"> {# تم تغيير الكلاس إلى about-page-container #}
-    <h2 class="text-center mb-4">عنا</h2>
+<div class="container mt-5 about-page-container">
+    <h2 class="text-center mb-4">من نحن في SocialSpot؟</h2>
 
     <img src="{{ url_for('static', filename='images/about.png') }}" alt="SocialSpot Overview" class="about-hero-image">
 
-    <p>مرحباً بك في **SocialSpot**! نحن أداة قوية ومتطورة مصممة لمساعدتك في البحث عن أسماء المستخدمين عبر مختلف المنصات والشبكات الاجتماعية. نقدم لك نظرة شاملة عن الوجود الرقمي بطريقة مسؤولة وفعالة.</p>
-    <p>مهمتنا هي توفير طريقة فعالة، سريعة، وموثوقة للعثور على وجود الأشخاص عبر الإنترنت. سواء كنت ترغب في التحقق من بصمتك الرقمية، أو إجراء بحث لأغراض أمنية، أو حتى استكشاف اهتمامات الآخرين، فإن SocialSpot يضع قوة البحث الشامل بين يديك.</p>
+    <p>مرحباً بك في **SocialSpot**! نحن لسنا مجرد أداة بحث، بل بوابتك لاستكشاف الوجود الرقمي بمسؤولية وفعالية غير مسبوقة. في عصر يتزايد فيه التواصل الرقمي، يصبح فهم بصمتنا وبصمات الآخرين أمراً حيوياً. هنا يأتي دور SocialSpot: تمكينك من الحصول على رؤى شاملة حول تواجد أسماء المستخدمين عبر مئات المنصات والشبكات الاجتماعية.</p>
+    <p>مهمتنا هي توفير طريقة **سريعة، دقيقة، وموثوقة** للعثور على وجود الأشخاص عبر الإنترنت. سواء كنت ترغب في التحقق من بصمتك الرقمية الخاصة، أو إجراء بحث لأغراض أمنية، أو حتى استكشاف اهتمامات الآخرين بشكل مسؤول، فإن SocialSpot يضع قوة البحث الشامل بين يديك بأقصى درجات الأمان والخصوصية.</p>
 
     <div class="feature-section">
         <div class="feature-item">
-            <i class="fas fa-shield-alt feature-icon"></i> {# أيقونة الخصوصية والأمان #}
-            <h4>الخصوصية والأمان</h4>
-            <p>نحن نؤمن بأهمية **الخصوصية والأمان عبر الإنترنت**، ولهذا السبب تم تصميم أداتنا لتعمل فقط على البيانات المتاحة للجمهور. نحن نلتزم بالمعايير الأخلاقية والقانونية لضمان أن تكون عمليات البحث مسؤولة ومفيدة.</p>
+            <i class="fas fa-shield-alt feature-icon"></i>
+            <h4>الخصوصية والأمان أولويتنا</h4>
+            <p>نحن نؤمن بأن **الخصوصية والأمان** هما حجر الزاوية في أي بحث رقمي مسؤول. لهذا السبب، تم تصميم أداتنا لتعمل فقط على البيانات المتاحة للجمهور بشكل قانوني وأخلاقي. نحن لا نجمع أو نخزن أي معلومات شخصية، ونضمن أن تكون عمليات البحث مفيدة وآمنة في آن واحد.</p>
         </div>
         <div class="feature-item">
-            <i class="fas fa-rocket feature-icon"></i> {# أيقونة السرعة والفعالية #}
-            <h4>السرعة والفعالية</h4>
-            <p>مع SocialSpot، يمكنك الحصول على نتائج سريعة ودقيقة. أداتنا محسّنة لتوفير تجربة بحث سلسة وفعالة، مما يوفر عليك الوقت والجهد.</p>
+            <i class="fas fa-rocket feature-icon"></i>
+            <h4>سرعة فائقة ونتائج دقيقة</h4>
+            <p>وقتك ثمين! مع SocialSpot، ستحصل على نتائج بحث شاملة ودقيقة في غضون ثوانٍ معدودة. أداتنا محسّنة لتقديم **تجربة بحث سلسة وفعالة**، مما يوفر عليك الوقت والجهد الذي قد تستغرقه في البحث اليدوي.</p>
         </div>
         <div class="feature-item">
-            <i class="fas fa-handshake feature-icon"></i> {# أيقونة الدعم والمساعدة #}
-            <h4>الدعم المستمر</h4>
-            <p>نسعى دائماً لتحسين خدمتنا وإضافة المزيد من المنصات لضمان حصولك على أشمل النتائج. فريقنا ملتزم بتوفير تجربة مستخدم سلسة وفعالة. إذا كان لديك أي أسئلة، اقتراحات، أو تحتاج إلى مساعدة، فلا تتردد في **التواصل معنا**. نحن هنا لخدمتك.</p>
+            <i class="fas fa-chart-bar feature-icon"></i> {# أيقونة إحصائيات/تحليلات #}
+            <h4>رؤى شاملة وتقارير واضحة</h4>
+            <p>لا نقدم مجرد روابط، بل **رؤى شاملة**. تقاريرنا منظمة وواضحة، تعرض لك المنصات التي وُجد عليها اسم المستخدم، مع روابط مباشرة لسهولة الوصول. نحن نساعدك على فهم الصورة الكاملة للوجود الرقمي.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-hands-helping feature-icon"></i> {# أيقونة مساعدة ودعم #}
+            <h4>دعم مستمر وتطوير دائم</h4>
+            <p>نحن نلتزم بالتحسين المستمر لخدمتنا، وإضافة المزيد من المنصات، وتقديم أفضل تجربة للمستخدم. فريقنا متاح للإجابة على استفساراتك، والاستماع إلى اقتراحاتك، وتقديم **الدعم الكامل** لضمان رضاك التام.</p>
         </div>
     </div>
+
+    <div class="mission-vision-section">
+        <h3>رؤيتنا ورسالتنا</h3>
+        <p><strong>رؤيتنا:</strong> أن نصبح المورد الأول والأكثر موثوقية للبحث عن أسماء المستخدمين في الفضاء الرقمي، وأن نمكن الأفراد والشركات من اتخاذ قرارات مستنيرة بناءً على معلومات دقيقة ومسؤولة.</p>
+        <p><strong>رسالتنا:</strong> توفير أداة بحث مبتكرة وسهلة الاستخدام، تلتزم بأعلى معايير الخصوصية والأمان، وتوفر رؤى شاملة حول الوجود الرقمي، مما يساهم في بناء بيئة رقمية أكثر شفافية وأماناً للجميع.</p>
+    </div>
+
 </div>
 {% endblock %}
